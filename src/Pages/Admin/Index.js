@@ -3,16 +3,21 @@ import Header from "../../layouts/Header/Header";
 import Sidebar from "../../layouts/Sidebar/Sidebar";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Dashboard from "./Dashboard";
-import PageHeader from "../PageHeader";
+import PageHeader from "./PageHeader";
 import Discount from "./Discount";
 import User from "./User";
 import Category from "./Category";
 import Payment from "./Payment";
+import AddPayment from "./AddPayment";
+import AddDiscount from "./AddDiscount";
+import AddUser from "./AddUser";
+import AddCategory from "./AddCategory";
+import EditPayment from "./EditPayment";
 
 const Index = ({ match }) => {
   console.log(match);
-   //Init menu sidebar
-   const initMenu = () => {
+  //Init menu sidebar
+  const initMenu = () => {
     return [
       {
         name: "Danh mục sản phẩm",
@@ -26,10 +31,7 @@ const Index = ({ match }) => {
         name: "Tài khoản người dùng",
         url: "/admin/user",
         open: false,
-        subItem: [
-          { name: "Danh sách", url: "/admin/user/list" },
-          { name: "Thêm", url: "/admin/user/add" }
-        ]
+        subItem: [{ name: "Danh sách", url: "/admin/user/list" }]
       },
       {
         name: "Mã giảm giá",
@@ -53,24 +55,28 @@ const Index = ({ match }) => {
   };
 
   // Phan route
-  const route = params => { 
+  const route = (params) => {
     let page = {};
-    console.log(params);
-    switch (params) {
+    switch (params.page) {
       case "dashboard":
         page = <Dashboard />;
         break;
       case "payment":
-        page = <Payment />;
+        if (params.p2 === "add") page = <AddPayment />;
+        else if (params.p2 === "edit") page = <EditPayment params={params}/>
+        else page = <Payment />;
         break;
       case "discount":
-        page = <Discount />;
+        if (params.p2 === "add") page = <AddDiscount />;
+        else page = <Discount />;
         break;
       case "user":
-        page = <User />;
+        if (params.p2 === "add") page = <AddUser />;
+        else page = <User />;
         break;
       case "category":
-        page = <Category />;
+        if (params.p2 === "add") page = <AddCategory />;
+        else page = <Category />;
         break;
       default:
         page = <Dashboard />;
@@ -79,13 +85,21 @@ const Index = ({ match }) => {
     return page;
   };
 
+  const getPageHeader = page => {
+    return page.charAt(0).toUpperCase() + page.slice(1);
+  };
+
   return (
     <div>
       <Header />
-      <Sidebar menu={initMenu}/>
+      <Sidebar menu={initMenu} />
       <div className="content-wrapper" style={{ minHeight: "619px" }}>
-        <PageHeader header="Dasboard" subHeader="EcoStore" level={match.url} />
-        {route(match.params.page)}
+        <PageHeader
+          header={getPageHeader(match.params.page)}
+          subHeader="EcoStore"
+          level={match.url}
+        />
+        {route(match.params)}
       </div>
     </div>
   );

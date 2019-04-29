@@ -2,16 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import * as serviceWorker from './serviceWorker';
 
 // Import config file
-import * as config from './config';
+import * as config from './helpers/config.js';
 process.config = config;
 
+// custorm library
+window.$.showAlert = (title, message) => {
+    window.$.alert({title : title, content : message, animation : 'bottom', animationSpeed : 200});
+}
 
 ReactDOM.render(<App />, document.getElementById('root'));
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();

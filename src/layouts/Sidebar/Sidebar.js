@@ -4,10 +4,6 @@ import SidebarForm from "../../components/Sidebar/SidebarForm";
 import SidebarMenu from "../../components/Sidebar/SidebarMenu";
 
 const Sidebar = props => {
-    
-    
-   
-
   //   Menu sidebar click
   const handleMenuItemClick = url => {
     menu.forEach(el => {
