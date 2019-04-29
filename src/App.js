@@ -10,7 +10,7 @@ class App extends React.Component {
       <div className="App">
         <Router>
           <Switch>
-            <Route path="/login" exact component={Login} />
+            <Route path="/" exact component={Login} />
             <PrivateRoute path="/admin/:page/:p2/:p3" component={Index} role="admin"/>
             <PrivateRoute path="/admin/:page/:p2" component={Index} role="admin"/>
             <PrivateRoute path="/admin/:page" component={Index} role="admin"/>
