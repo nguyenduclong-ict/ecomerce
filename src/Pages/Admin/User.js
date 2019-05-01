@@ -8,7 +8,7 @@ var $ = window.$;
 const User = props => {
   const [list, setList] = useState([]);
   const [checkall, setCheckall] = useState(false);
-  const page = 10;
+  const page = 100;
   const tableRef = useRef();
   const [show, setShow] = useState(false);
 
@@ -154,7 +154,7 @@ const User = props => {
           <input
             type="checkbox"
             checked={v.row._original.check}
-            onChange={() => onCheckBoxChange(v.row._id)}
+            onChange={() => onCheckBoxChange(v.row._original._id)}
           />
         </div>
       ),

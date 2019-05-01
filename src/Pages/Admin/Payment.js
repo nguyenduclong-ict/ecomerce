@@ -9,7 +9,7 @@ var $ = window.$;
 const Payment = () => {
   const [list, setList] = useState([]);
   const [checkall, setCheckall] = useState(false);
-  const page = 10;
+  const page = 100;
   const tableRef = useRef();
   const [show, setShow] = useState(false);
 

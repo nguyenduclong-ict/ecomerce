@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Login.css";
 import Axios from "axios";
 import { login } from "../helpers/Auth";
-import { getHeader } from "../helpers/Auth";
-
+import {Redirect} from 'react-router-dom'
 var $ = window.$;
 const Login = props => {
   const [email, setEmail] = useState("");
@@ -20,13 +19,17 @@ const Login = props => {
         login(res.data.token, res.data.role, res.data.imageCode);
         props.history.push("/admin/dashboard");
       } else $.alert(res.data.message);
-    });
+    })
+    .catch(err => {
+      console.log(err);
+      $.alertError('Lỗi kết nối');
+    })
   };
 
   return (
     <div className="login-box">
       <div className="login-logo">
-        <a href="../../index2.html">
+        <a href="/admin/dashboard">
           <b>Ecom</b>Store
         </a>
       </div>

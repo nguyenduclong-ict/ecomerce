@@ -9,7 +9,7 @@ var $ = window.$;
 const Category = () => {
   const [list, setList] = useState([]);
   const [checkall, setCheckall] = useState(false);
-  const page = 10;
+  const page = 100;
   const tableRef = useRef();
   const [show, setShow] = useState(false);
 
@@ -174,6 +174,8 @@ const Category = () => {
     },
     {
       Header: "Parent",
+      accessor : 'parentId.name',
+      filterable : true,
       Cell: v => {
         let row = v.row._original;
         if (row.parentId !== null) return row.parentId.name;
