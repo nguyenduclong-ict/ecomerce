@@ -12,7 +12,7 @@ class Header extends React.Component {
           </span>
           {/* <!-- logo for regular state and mobile devices --> */}
           <span className="logo-lg">
-            <b>EcoStore</b>
+            <b>EcomStore</b>
           </span>
         </Link>
 
