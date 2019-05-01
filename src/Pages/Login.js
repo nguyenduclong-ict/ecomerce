@@ -18,11 +18,11 @@ const Login = props => {
       if (res.data.result) {
         login(res.data.token, res.data.role, res.data.imageCode);
         props.history.push("/admin/dashboard");
-      } else $.alert(res.data.message);
+      } else $.alertError(res.data.message);
     })
     .catch(err => {
       console.log(err);
-      $.alertError('Lỗi kết nối');
+      $.alertError('Lỗi kết nối'); 
     })
   };
 
