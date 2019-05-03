@@ -7,7 +7,7 @@ var $ = window.$;
 const Login = props => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [redirect, setRedirect] = useState()
   const submitForm = e => {
     e.preventDefault();
     console.log(process.config.loginUrl);
@@ -17,7 +17,7 @@ const Login = props => {
     }).then(res => {
       if (res.data.result) {
         login(res.data.token, res.data.role, res.data.imageCode);
-        props.history.push("/admin/dashboard");
+        window.location.href='/admin/dashboard';
       } else $.alertError(res.data.message);
     })
     .catch(err => {
@@ -28,6 +28,7 @@ const Login = props => {
 
   return (
     <div className="login-box">
+    {redirect ? <Redirect to={redirect}/> : ''}
       <div className="login-logo">
         <a href="/admin/dashboard">
           <b>Ecom</b>Store

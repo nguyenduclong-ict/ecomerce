@@ -13,8 +13,10 @@ import AddDiscount from "./AddDiscount";
 import AddUser from "./AddUser";
 import AddCategory from "./AddCategory";
 import EditPayment from "./EditPayment";
+import EditDiscount from "./EditDiscount";
 
-const Index = ({ match }) => {
+const Index = (props) => {
+  const match = props.match;
   console.log(match);
   //Init menu sidebar
   const initMenu = () => {
@@ -29,13 +31,11 @@ const Index = ({ match }) => {
       },
       {
         name: "Tài khoản người dùng",
-        url: "/admin/user",
         open: false,
         subItem: [{ name: "Danh sách", url: "/admin/user/list" }]
       },
       {
         name: "Mã giảm giá",
-        url: "/admin/discount",
         open: false,
         subItem: [
           { name: "Danh sách", url: "/admin/discount/list" },
@@ -44,7 +44,6 @@ const Index = ({ match }) => {
       },
       {
         name: "Phương thức thanh toán",
-        url: "/admin/payment",
         open: false,
         subItem: [
           { name: "Danh sách", url: "/admin/payment/list" },
@@ -53,6 +52,12 @@ const Index = ({ match }) => {
       }
     ];
   };
+
+  const getQueryValue = (query, key) => {
+    query = query.substring(1);
+    let list = query.split('=');
+    return list[list.indexOf(key) + 1];
+  }
 
   // Phan route
   const route = (params) => {
@@ -67,7 +72,9 @@ const Index = ({ match }) => {
         else page = <Payment />;
         break;
       case "discount":
-        if (params.p2 === "add") page = <AddDiscount />;
+        console.log(props.location);
+        if (params.p2 === "add") return  page = <AddDiscount /> ;
+        if (params.p2 === "edit") return  page = <EditDiscount params={{id : getQueryValue(props.location.search,'id')}} />;
         else page = <Discount />;
         break;
       case "user":
@@ -91,6 +98,7 @@ const Index = ({ match }) => {
 
   return (
     <div>
+      
       <Header />
       <Sidebar menu={initMenu} />
       <div className="content-wrapper" style={{ minHeight: "619px" }}>

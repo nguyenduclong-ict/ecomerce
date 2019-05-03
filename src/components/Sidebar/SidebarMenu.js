@@ -1,6 +1,7 @@
 import React , {useState} from "react";
 import SidebarMenuItem from "./SidebarMenuItem";
-
+import {Link} from 'react-router-dom'
+var $ = window.$;
 function SidebarMenu (props) {
   const onItemClick = props.onItemClick;
 
@@ -14,8 +15,8 @@ function SidebarMenu (props) {
           submenu.push(<SidebarMenuItem onClick={onItemClick} name={el.name} url={el.url} icon={el.icon} active={el.active}/>);
         });
         menu.push(
-          <li className={"treeview " + (element.open ? 'menu-open' : '')}>
-            <a href={element.url}>
+          <li className={"treeview " + (element.open ? 'menu-open' : '')} >
+            <a href="#">
               <i className="fa fa-laptop"></i>
               <span>{element.name}</span>
               <span className="pull-right-container">

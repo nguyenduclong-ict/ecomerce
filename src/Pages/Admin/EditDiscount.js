@@ -9,7 +9,7 @@ import { resolve } from "url";
 import { Promise, reject } from "q";
 const $ = window.$;
 
-const AddDiscount = () => {
+const EditDiscount = ({params}) => {
   const [value, setValue] = useState(0);
   const [products, setProducts] = useState([]);
   const [list, setList] = useState([]);
@@ -33,8 +33,32 @@ const AddDiscount = () => {
       });
   };
 
+  const getData = () => {
+    let url = process.config.apiUrl + "/admin/discount/detail/" + params.id;
+    axios
+      .get(url, { headers: getHeader() })
+      .then(res => {
+          console.log(res.data);
+        res.data.products.map(e => {
+          e.value = e._id;
+          e.label = e.name;
+          return e;
+        });
+        console.log(res.data);
+        setProducts([...res.data.products]);
+        setStartDate(new Date(res.data.startDate));
+        setEndDate(new Date(res.data.endDate));
+        setValue(res.data.value);
+      })
+      .catch(err => {
+          console.log(err);
+      });
+  };
+
   useEffect(() => {
     getListProducts().then(result => setList([...result]));
+    getData();
+    //
     return () => {};
   }, []);
   const removeProductSelected = value => {
@@ -137,15 +161,17 @@ const AddDiscount = () => {
             <div className="form-group">
               <label>Tỉ lệ giảm giá (%):</label>
 
-              <input
-                className="form-control"
-                type="number"
-                max={99}
-                min={0}
-                value={value}
-                placeholder="Nhập phần trăm giảm giá"
-                onChange={e => setValue(e.target.value)}
-              />
+              <div className="input-group">
+                <input
+                  className="form-control"
+                  type="number"
+                  max={99}
+                  min={0}
+                  value={value}
+                  placeholder="Nhập phần trăm giảm giá"
+                  onChange={e => setValue(e.target.value)}
+                />
+              </div>
             </div>
           </div>
           {/* <!-- /.box-body --> */}
@@ -161,4 +187,4 @@ const AddDiscount = () => {
   );
 };
 
-export default AddDiscount;
+export default EditDiscount;

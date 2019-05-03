@@ -3,6 +3,7 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import Axios from "axios";
 import { getHeader } from "../../helpers/Auth";
+import {Link} from 'react-router-dom';
 var $ = window.$;
 
 const Discount = props => {
@@ -24,11 +25,11 @@ const Discount = props => {
   };
 
   const onSearch = e => {
-    if(e.keyCode === 13) {
-      // search 
+    if (e.keyCode === 13) {
+      // search
       let value = e.target.value;
       setList([]);
-      getList('all', 'all', value);
+      getList("all", "all", value);
     }
   };
 
@@ -96,13 +97,15 @@ const Discount = props => {
       }
     });
   };
-  const getList = (product = 'all', provider = 'all', search = 'all') => {
-    if(search && search !== 'all') search = search.split(' ').join('%20')
+  const getList = (product = "all", provider = "all", search = "all") => {
+    if (search && search !== "all") search = search.split(" ").join("%20");
     console.log(search);
     let url =
       process.config.apiUrl +
-      `/admin/discount/list/${list.length}-${page}-${product}-${provider}-${search}`;
-      console.log(url);
+      `/admin/discount/list/${
+        list.length
+      }-${page}-${product}-${provider}-${search}`;
+    console.log(url);
     Axios.get(url, {
       headers: getHeader()
     }).then(result => {
@@ -239,6 +242,22 @@ const Discount = props => {
           </div>
         );
       }
+    },
+    {
+      Header: "Edit",
+      width: 50,
+      Cell: v => {
+        let row = v.row._original;
+        return (
+          <div style={{ textAlign: "center" }}>
+            <Link
+              className={"btn fa fa-edit"}
+              style={{ color: "blue" }}
+              to={'/admin/discount/edit?id=' + row._id}
+            />
+          </div>
+        );
+      }
     }
   ];
   return (
@@ -260,36 +279,35 @@ const Discount = props => {
                     />
                   </div>
                   <div className="col-md-6">
-                  <button
-                    type="button"
-                    className="btn btn-success pull-right"
-                    onClick={() => getList()}
-                  >
-                    <i className="fa fa-refresh" /> Load more
-                  </button>
-
-                  {show && (
                     <button
-                      style={{ marginRight: "2px" }}
                       type="button"
-                      className="btn btn-warning pull-right"
-                      onClick={() => onBlockMultiple(true)}
+                      className="btn btn-success pull-right"
+                      onClick={() => getList()}
                     >
-                      <i className="fa fa-lock" /> Block
+                      <i className="fa fa-refresh" /> Load more
                     </button>
-                  )}
 
-                  {show && (
-                    <button
-                      style={{ marginRight: "2px" }}
-                      type="button"
-                      onClick={() => onBlockMultiple(false)}
-                      className="btn btn-primary pull-right"
-                    >
-                      <i className="fa fa-unlock" /> Unblock
-                    </button>
-                  )}
+                    {show && (
+                      <button
+                        style={{ marginRight: "2px" }}
+                        type="button"
+                        className="btn btn-warning pull-right"
+                        onClick={() => onBlockMultiple(true)}
+                      >
+                        <i className="fa fa-lock" /> Block
+                      </button>
+                    )}
 
+                    {show && (
+                      <button
+                        style={{ marginRight: "2px" }}
+                        type="button"
+                        onClick={() => onBlockMultiple(false)}
+                        className="btn btn-primary pull-right"
+                      >
+                        <i className="fa fa-unlock" /> Unblock
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
