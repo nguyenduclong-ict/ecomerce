@@ -1,23 +1,27 @@
 import React from "react";
 import Header from "../../layouts/Header/Header";
 import Sidebar from "../../layouts/Sidebar/Sidebar";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import Dashboard from "./Dashboard";
 import PageHeader from "./PageHeader";
-import Discount from "./Discount";
-import User from "./User";
-import Category from "./Category";
-import Payment from "./Payment";
-import AddPayment from "./AddPayment";
-import AddDiscount from "./AddDiscount";
-import AddUser from "./AddUser";
-import AddCategory from "./AddCategory";
-import EditPayment from "./EditPayment";
-import EditDiscount from "./EditDiscount";
+import AdminRouter from "./router";
 
-const Index = (props) => {
+const Index = props => {
+  // Get Query from url
+  const getQuery = str => {
+    let query = str.replace("?", "");
+    let myRegex = /([^\&]*)\=([^\&]*)/g;
+    let result = {};
+    let match;
+    while ((match = myRegex.exec(query))) {
+      result[match[1]] = match[2];
+    }
+    return result;
+  };
+
+  //
+  const query = getQuery(props.location.search);
   const match = props.match;
-  console.log(match);
+  let page = AdminRouter.getRoute(match.url);
+  console.log(page);
   //Init menu sidebar
   const initMenu = () => {
     return [
@@ -53,61 +57,17 @@ const Index = (props) => {
     ];
   };
 
-  const getQueryValue = (query, key) => {
-    query = query.substring(1);
-    let list = query.split('=');
-    return list[list.indexOf(key) + 1];
-  }
-
-  // Phan route
-  const route = (params) => {
-    let page = {};
-    switch (params.page) {
-      case "dashboard":
-        page = <Dashboard />;
-        break;
-      case "payment":
-        if (params.p2 === "add") page = <AddPayment />;
-        else if (params.p2 === "edit") page = <EditPayment params={params}/>
-        else page = <Payment />;
-        break;
-      case "discount":
-        console.log(props.location);
-        if (params.p2 === "add") return  page = <AddDiscount /> ;
-        if (params.p2 === "edit") return  page = <EditDiscount params={{id : getQueryValue(props.location.search,'id')}} />;
-        else page = <Discount />;
-        break;
-      case "user":
-        if (params.p2 === "add") page = <AddUser />;
-        else page = <User />;
-        break;
-      case "category":
-        if (params.p2 === "add") page = <AddCategory />;
-        else page = <Category />;
-        break;
-      default:
-        page = <Dashboard />;
-        break;
-    }
-    return page;
-  };
-
-  const getPageHeader = page => {
-    return page.charAt(0).toUpperCase() + page.slice(1);
-  };
-
   return (
     <div>
-      
-      <Header />
+      <Header url="/admin/dashboard" />
       <Sidebar menu={initMenu} />
       <div className="content-wrapper" style={{ minHeight: "619px" }}>
         <PageHeader
-          header={getPageHeader(match.params.page)}
+          header={page ? page.header : ""}
           subHeader="EcoStore"
           level={match.url}
         />
-        {route(match.params)}
+        {page ? <page.component query={query} params={match.params} /> : ""}
       </div>
     </div>
   );

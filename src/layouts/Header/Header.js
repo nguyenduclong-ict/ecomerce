@@ -1,11 +1,14 @@
 import React from "react";
 import {Link} from 'react-router-dom'
 class Header extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   render() {
     return (
       <header className="Header main-header">
         {/* <!-- Logo --> */}
-        <Link to="/admin/dashboard" className="logo">
+        <Link to={this.props.url} className="logo">
           {/* mini logo for sidebar mini 50x50 pixels */}
           <span className="logo-mini">
             <b>E</b>S

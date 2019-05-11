@@ -1,6 +1,6 @@
-import React , {useEffect, useState} from "react";
+import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import { getAuthInfo , checkTokenStatus} from "../helpers/Auth";
+import { getAuthInfo} from "../helpers/Auth";
 
 const PrivateRoute = ({ component: Component, role, ...rest }) => {
   let auth = getAuthInfo();
