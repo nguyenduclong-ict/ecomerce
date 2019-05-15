@@ -1,10 +1,86 @@
-import React from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import Header from "../../layouts/Header/Header";
 import Sidebar from "../../layouts/Sidebar/Sidebar";
 import PageHeader from "./PageHeader";
 import AdminRouter from "./router";
+import {
+  loadScript,
+  loadCSS,
+  clearAllScriptAndCSS
+} from "../../helpers/Loader";
+import loading from "../../components/Loading";
+import "../../components/loading.css";
 
+// Add js and css to html
+const addJsAndCss = async () => {
+  clearAllScriptAndCSS();
+  await loadCSS("lib/bootstrap/dist/css/bootstrap.min.css");
+  await loadCSS("lib/font-awesome/css/font-awesome.min.css");
+  await loadCSS("lib/Ionicons/css/ionicons.min.css");
+  await loadCSS("dist/css/AdminLTE.css");
+  await loadCSS("plugins/alertifyjs/css/alertify.min.css");
+  await loadCSS("plugins/alertifyjs/css/themes/default.min.css");
+  await loadCSS("plugins/jquery-confirm/jquery-confirm.min.css");
+  await loadCSS("dist/css/skins/skin-blue.min.css");
+  await loadCSS(
+    "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic"
+  );
+
+  // Footer
+  await loadScript("lib/jquery/dist/jquery.min.js");
+  // await loadScript("lib/bootstrap/dist/js/bootstrap.min.js");
+  await loadScript("dist/js/adminlte.js");
+  await loadScript("plugins/alertifyjs/alertify.min.js");
+  await loadScript("plugins/jquery-confirm/jquery-confirm.min.js");
+
+  window.onload = () => {
+    window.$.alertError = message => {
+      window.$.alert({
+        title: "Lỗi",
+        content: message,
+        type: "red",
+        animationSpeed: 100
+      });
+    };
+
+    window.$.alertWarning = message => {
+      window.$.alert({
+        title: "Lưu ý",
+        content: message,
+        animationSpeed: 100,
+        type: "orange"
+      });
+    };
+
+    window.$.alertSuccess = message => {
+      window.$.alert({
+        title: "Thành công",
+        content: message,
+        animationSpeed: 100,
+        type: "green"
+      });
+    };
+    // custorm library
+    window.$.showAlert = (title, message) => {
+      window.$.alert({
+        title: title,
+        content: message,
+        animation: "bottom",
+        animationSpeed: 200
+      });
+    };
+  };
+};
+// Add JS and CSS
+console.log("aaa");
+
+// Index Component
 const Index = props => {
+  const [isload, setIsload] = useState(true);
+  useEffect(() => {
+    addJsAndCss();
+    setIsload(false);
+  }, []);
   // Get Query from url
   const getQuery = str => {
     let query = str.replace("?", "");
@@ -57,7 +133,7 @@ const Index = props => {
     ];
   };
 
-  return (
+  return isload === false ? (
     <div>
       <Header url="/admin/dashboard" />
       <Sidebar menu={initMenu} />
@@ -70,6 +146,8 @@ const Index = props => {
         {page ? <page.component query={query} params={match.params} /> : ""}
       </div>
     </div>
+  ) : (
+    ""
   );
 };
 
