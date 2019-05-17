@@ -98,7 +98,6 @@ const Profile = (props) => {
                 onChange={(e) => onAddressChange(e)}
               />
             </div>
-
             <div className="form-group">
               <label for="inputPhone">Số điện thoại</label>
               <input
