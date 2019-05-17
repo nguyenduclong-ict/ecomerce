@@ -14,8 +14,10 @@ import AddUser from "./AddUser";
 import AddCategory from "./AddCategory";
 import EditPayment from "./EditPayment";
 import EditDiscount from "./EditDiscount";
+import Profile from "../../Pages/Admin/Profile";
 
 const Index = (props) => {
+  console.log(props);
   const match = props.match;
   console.log(match);
   //Init menu sidebar
@@ -85,6 +87,9 @@ const Index = (props) => {
         if (params.p2 === "add") page = <AddCategory />;
         else page = <Category />;
         break;
+        case 'profile' :
+          return page = <Profile params={{params}}/>
+        break;
       default:
         page = <Dashboard />;
         break;
@@ -99,7 +104,7 @@ const Index = (props) => {
   return (
     <div>
       
-      <Header />
+      <Header  history={props.history}/>
       <Sidebar menu={initMenu} />
       <div className="content-wrapper" style={{ minHeight: "619px" }}>
         <PageHeader

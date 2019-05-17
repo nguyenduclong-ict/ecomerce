@@ -28,7 +28,7 @@ const Sidebar = props => {
   return (
     <aside className="main-sidebar">
       <section className="sidebar">
-        <UserPanel />
+        <UserPanel  />
         <SidebarForm />
         <SidebarMenu
           onItemClick={handleMenuItemClick}
