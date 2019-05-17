@@ -6,5 +6,4 @@ config.registerUrl = config.apiUrl + "/register";
 config.userInfoUrl =  config.apiUrl + "/token/info";
 config.checkTokenUrl  =  config.apiUrl + "/token/status";
 
-
 module.exports = config;
