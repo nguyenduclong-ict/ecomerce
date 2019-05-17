@@ -2,6 +2,7 @@ import React from "react";
 import Header from "../../layouts/Header/Header";
 import Sidebar from "../../layouts/Sidebar/Sidebar";
 import PageHeader from "./PageHeader";
+
 import AdminRouter from "./router";
 
 const Index = props => {
@@ -19,6 +20,7 @@ const Index = props => {
 
   //
   const query = getQuery(props.location.search);
+
   const match = props.match;
   let page = AdminRouter.getRoute(match.url);
   console.log(page);
@@ -60,6 +62,7 @@ const Index = props => {
   return (
     <div>
       <Header url="/admin/dashboard" />
+
       <Sidebar menu={initMenu} />
       <div className="content-wrapper" style={{ minHeight: "619px" }}>
         <PageHeader

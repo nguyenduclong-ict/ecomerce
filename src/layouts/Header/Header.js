@@ -1,10 +1,15 @@
 import React from "react";
 import {Link} from 'react-router-dom'
+import Profile from "../../components/Header/Profile";
 class Header extends React.Component {
+
   constructor(props) {
     super(props);
   }
+
   render() {
+
+    
     return (
       <header className="Header main-header">
         {/* <!-- Logo --> */}
@@ -29,6 +34,11 @@ class Header extends React.Component {
                 <ul className="nav navbar-nav">
                 </ul>
             </div>
+            <div class="navbar-custom-menu">
+         <ul class="nav navbar-nav">
+            <Profile history={this.props.history}/>
+        </ul>
+          </div>
         </nav>
       </header>
     );
