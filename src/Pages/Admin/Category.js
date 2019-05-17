@@ -3,10 +3,10 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import Axios from "axios";
 import { getHeader } from "../../helpers/Auth";
-import {Link} from 'react-router-dom'
-var $ = window.$;
+import { Link } from "react-router-dom";
 
 const Category = () => {
+  var $ = window.$;
   const [list, setList] = useState([]);
   const [checkall, setCheckall] = useState(false);
   const page = 100;
@@ -174,8 +174,8 @@ const Category = () => {
     },
     {
       Header: "Parent",
-      accessor : 'parentId.name',
-      filterable : true,
+      accessor: "parentId.name",
+      filterable: true,
       Cell: v => {
         let row = v.row._original;
         if (row.parentId !== null) return row.parentId.name;
@@ -207,44 +207,47 @@ const Category = () => {
           <div className="box box-default">
             <div className="box-header">
               <div className="box-header with-border">
-                <h3 className="box-title">Danh sách danh mục</h3>
-                <button
-                  type="button"
-                  className="btn btn-success pull-right"
-                  onClick={() => getList()}
-                >
-                  <i className="fa fa-refresh" /> Load more
-                </button>
+                <div className="row">
+                  <div className="col-md-6 col-6 pull-right padding">
+                    <button
+                      type="button"
+                      className="btn btn-success pull-right"
+                      onClick={() => getList()}
+                    >
+                      <i className="fa fa-refresh" /> Load more
+                    </button>
 
-                <Link
-                style={{ marginRight: "2px" }}
-                    to="/admin/category/add"
-                  className="btn btn-success pull-right"
-                >
-                  <i className="fa fa-plus" /> Add
-                </Link>
+                    <Link
+                      style={{ marginRight: "2px" }}
+                      to="/admin/category/add"
+                      className="btn btn-success pull-right"
+                    >
+                      <i className="fa fa-plus" /> Add
+                    </Link>
 
-                {show && (
-                  <button
-                    style={{ marginRight: "2px" }}
-                    type="button"
-                    className="btn btn-warning pull-right"
-                    onClick={() => onBlockMultiple(false)}
-                  >
-                    <i className="fa fa-lock" /> Block
-                  </button>
-                )}
+                    {show && (
+                      <button
+                        style={{ marginRight: "2px" }}
+                        type="button"
+                        className="btn btn-warning pull-right"
+                        onClick={() => onBlockMultiple(false)}
+                      >
+                        <i className="fa fa-lock" /> Block
+                      </button>
+                    )}
 
-                {show && (
-                  <button
-                    style={{ marginRight: "2px" }}
-                    type="button"
-                    onClick={() => onBlockMultiple(true)}
-                    className="btn btn-primary pull-right"
-                  >
-                    <i className="fa fa-unlock" /> Unblock
-                  </button>
-                )}
+                    {show && (
+                      <button
+                        style={{ marginRight: "2px" }}
+                        type="button"
+                        onClick={() => onBlockMultiple(true)}
+                        className="btn btn-primary pull-right"
+                      >
+                        <i className="fa fa-unlock" /> Unblock
+                      </button>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
             <div className="box-body">

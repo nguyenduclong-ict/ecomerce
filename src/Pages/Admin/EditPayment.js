@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { getHeader } from "../../helpers/Auth";
-const $ = window.$;
 
 const EditPayment = props => {
+  const $ = window.$;
   const [name, setName] = useState();
   const [description, setDescription] = useState();
   const [code, setCode] = useState();
@@ -68,7 +68,6 @@ const EditPayment = props => {
     <section className="content">
       <div className="box box-primary">
         <div className="box-header with-border">
-          <h3 className="box-title">Chỉnh sửa phương thức thanh toán</h3>
         </div>
         {/* <!-- /.box-header --> */}
         {/* <!-- form start --> */}

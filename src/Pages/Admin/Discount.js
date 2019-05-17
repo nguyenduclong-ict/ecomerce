@@ -3,10 +3,10 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import Axios from "axios";
 import { getHeader } from "../../helpers/Auth";
-import {Link} from 'react-router-dom';
-var $ = window.$;
+import { Link } from "react-router-dom";
 
 const Discount = props => {
+  var $ = window.$;
   const [list, setList] = useState([]);
   const [checkall, setCheckall] = useState(false);
   const page = 100;
@@ -116,9 +116,10 @@ const Discount = props => {
         e.endDate = new Date(e.endDate).toLocaleDateString();
         return e;
       });
-      console.log([...list, ...result.data]);
-      setList([...list, ...result.data]);
-      if (result.data == 0) window.$.alertWarning("Đã load hết dữ liệu");
+      console.log(result.data);
+      if(search) setList([...result.data]);
+      else setList([...list, ...result.data]);
+      if (result.data == 0 && !search ) window.$.alertWarning("Đã load hết dữ liệu");
     });
   };
   const onCheckAllChange = e => {
@@ -253,7 +254,7 @@ const Discount = props => {
             <Link
               className={"btn fa fa-edit"}
               style={{ color: "blue" }}
-              to={'/admin/discount/edit?id=' + row._id}
+              to={"/admin/discount/edit?id=" + row._id}
             />
           </div>
         );
@@ -267,9 +268,8 @@ const Discount = props => {
           <div className="box box-default">
             <div className="box-header">
               <div className="box-header with-border">
-                <h3 className="box-title">Danh sách người dùng</h3>
-                <div class="form-group row margin">
-                  <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-6 padding-top">
                     <input
                       type="text"
                       class="form-control"
@@ -278,7 +278,7 @@ const Discount = props => {
                       onKeyDown={onSearch}
                     />
                   </div>
-                  <div className="col-md-6">
+                  <div className="col-md-6 padding-top">
                     <button
                       type="button"
                       className="btn btn-success pull-right"

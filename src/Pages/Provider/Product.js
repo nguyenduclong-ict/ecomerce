@@ -206,10 +206,10 @@ const Product = () => {
       Cell: v => {
         let row = v.row._original;
         return (
-          <div style={{textAlign: "center"}}>
+          <div style={{ textAlign: "center" }}>
             <Link to={"/admin/payment/edit/" + row._id}>
-              <i className="btn fa fa-edit" /> 
-              </Link>
+              <i className="btn fa fa-edit" />
+            </Link>
           </div>
         );
       }
@@ -222,44 +222,40 @@ const Product = () => {
           <div className="box box-default">
             <div className="box-header">
               <div className="box-header with-border">
-                <h3 className="box-title">Danh sách phương thức thanh toán</h3>
-                <button
-                  type="button"
-                  className="btn btn-success pull-right"
-                  onClick={() => getList()}
-                >
-                  <i className="fa fa-refresh" /> Load more
-                </button>
+                    <button
+                      type="button"
+                      className="btn btn-success pull-right"
+                      onClick={() => getList()}
+                    >
+                      <i className="fa fa-refresh" /> Load more
+                    </button>
 
-                <Link
-                style={{ marginRight: "2px" }}
-                    to="/admin/payment/add"
-                  className="btn btn-success pull-right"
-                >
-                  <i className="fa fa-plus" /> Add
-                </Link>
+                    <Link
+                      to="/admin/payment/add"
+                      className="btn btn-mgr btn-success pull-right"
+                    >
+                      <i className="fa fa-plus" /> Add
+                    </Link>
 
-                {show && (
-                  <button
-                    style={{ marginRight: "2px" }}
-                    type="button"
-                    className="btn btn-warning pull-right"
-                    onClick={() => onBlockMultiple(false)}
-                  >
-                    <i className="fa fa-lock" /> Block
-                  </button>
-                )}
+                    {show && (
+                      <button
+                        type="button"
+                        className="btn btn-mgr btn-warning pull-right"
+                        onClick={() => onBlockMultiple(false)}
+                      >
+                        <i className="fa fa-lock" /> Block
+                      </button>
+                    )}
 
-                {show && (
-                  <button
-                    style={{ marginRight: "2px" }}
-                    type="button"
-                    onClick={() => onBlockMultiple(true)}
-                    className="btn btn-primary pull-right"
-                  >
-                    <i className="fa fa-unlock" /> Unblock
-                  </button>
-                )}
+                    {show && (
+                      <button
+                        type="button"
+                        onClick={() => onBlockMultiple(true)}
+                        className="btn btn-mgr btn-primary pull-right"
+                      >
+                        <i className="fa fa-unlock" /> Unblock
+                      </button>
+                    )}
               </div>
             </div>
             <div className="box-body">

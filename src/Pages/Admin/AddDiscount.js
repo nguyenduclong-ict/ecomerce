@@ -7,9 +7,9 @@ import axios from "axios";
 import { getHeader } from "../../helpers/Auth";
 import { resolve } from "url";
 import { Promise, reject } from "q";
-const $ = window.$;
 
 const AddDiscount = () => {
+  const $ = window.$;
   const [value, setValue] = useState(0);
   const [products, setProducts] = useState([]);
   const [list, setList] = useState([]);
@@ -66,11 +66,6 @@ const AddDiscount = () => {
   return (
     <section className="content">
       <div className="box box-primary">
-        <div className="box-header with-border">
-          <h3 className="box-title">Thêm phương thức thanh toán</h3>
-        </div>
-        {/* <!-- /.box-header --> */}
-        {/* <!-- form start --> */}
         <form role="form">
           <div className="box-body">
             <div className="form-group">

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { getHeader } from "../../helpers/Auth";
-const $ = window.$;
 
 const AddPayment = () => {
+  const $ = window.$;
   const [name, setName] = useState();
   const [description, setDescription] = useState();
   const [code, setCode] = useState();
@@ -51,11 +51,6 @@ const AddPayment = () => {
   return (
     <section className="content">
       <div className="box box-primary">
-        <div className="box-header with-border">
-          <h3 className="box-title">Thêm phương thức thanh toán</h3>
-        </div>
-        {/* <!-- /.box-header --> */}
-        {/* <!-- form start --> */}
         <form role="form">
           <div className="box-body">
             <div className="form-group">

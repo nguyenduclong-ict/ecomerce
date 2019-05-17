@@ -10,28 +10,32 @@ import {
 } from "../../helpers/Loader";
 import loading from "../../components/Loading";
 import "../../components/loading.css";
+import Loader from "../../components/Loader";
 
+let hrefs = [];
+hrefs.push("lib/bootstrap/dist/css/bootstrap.min.css");
+hrefs.push("lib/font-awesome/css/font-awesome.min.css");
+hrefs.push("lib/Ionicons/css/ionicons.min.css");
+hrefs.push("dist/css/AdminLTE.css");
+hrefs.push("plugins/alertifyjs/css/alertify.min.css");
+hrefs.push("plugins/alertifyjs/css/themes/default.min.css");
+hrefs.push("plugins/jquery-confirm/jquery-confirm.min.css");
+hrefs.push("dist/css/skins/skin-blue.min.css");
+hrefs.push(
+  "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic"
+);
+
+let srcs = [];
+
+// Footer
+srcs.push("lib/jquery/dist/jquery.min.js");
+srcs.push("lib/bootstrap/dist/js/bootstrap.min.js");
+srcs.push("dist/js/adminlte.js");
+srcs.push("plugins/alertifyjs/alertify.min.js");
+srcs.push("plugins/jquery-confirm/jquery-confirm.min.js");
 // Add js and css to html
 const addJsAndCss = async () => {
   clearAllScriptAndCSS();
-  await loadCSS("lib/bootstrap/dist/css/bootstrap.min.css");
-  await loadCSS("lib/font-awesome/css/font-awesome.min.css");
-  await loadCSS("lib/Ionicons/css/ionicons.min.css");
-  await loadCSS("dist/css/AdminLTE.css");
-  await loadCSS("plugins/alertifyjs/css/alertify.min.css");
-  await loadCSS("plugins/alertifyjs/css/themes/default.min.css");
-  await loadCSS("plugins/jquery-confirm/jquery-confirm.min.css");
-  await loadCSS("dist/css/skins/skin-blue.min.css");
-  await loadCSS(
-    "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic"
-  );
-
-  // Footer
-  await loadScript("lib/jquery/dist/jquery.min.js");
-  // await loadScript("lib/bootstrap/dist/js/bootstrap.min.js");
-  await loadScript("dist/js/adminlte.js");
-  await loadScript("plugins/alertifyjs/alertify.min.js");
-  await loadScript("plugins/jquery-confirm/jquery-confirm.min.js");
 
   window.onload = () => {
     window.$.alertError = message => {
@@ -76,11 +80,6 @@ console.log("aaa");
 
 // Index Component
 const Index = props => {
-  const [isload, setIsload] = useState(true);
-  useEffect(() => {
-    addJsAndCss();
-    setIsload(false);
-  }, []);
   // Get Query from url
   const getQuery = str => {
     let query = str.replace("?", "");
@@ -133,8 +132,9 @@ const Index = props => {
     ];
   };
 
-  return isload === false ? (
+  return (
     <div>
+      <Loader hrefs={hrefs}></Loader>
       <Header url="/admin/dashboard" />
       <Sidebar menu={initMenu} />
       <div className="content-wrapper" style={{ minHeight: "619px" }}>
@@ -145,10 +145,9 @@ const Index = props => {
         />
         {page ? <page.component query={query} params={match.params} /> : ""}
       </div>
+      <Loader srcs={srcs}></Loader>
     </div>
-  ) : (
-    ""
-  );
+  )
 };
 
 export default Index;

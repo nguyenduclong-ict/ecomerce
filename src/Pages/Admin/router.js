@@ -25,7 +25,7 @@ const router = {
     {
       url: "/admin/user/list",
       component: User,
-      header: "Danh sách sản phẩm"
+      header: "Danh sách tài khoản"
     },
     // Category
     {
@@ -47,33 +47,33 @@ const router = {
     {
       url: "/admin/discount/list",
       component: Discount,
-      header: "Danh sách danh mục sản phẩm"
+      header: "Danh sách mã giảm giá"
     },
     {
       url: "/admin/discount/add",
       component: AddDiscount,
-      header: "Thêm danh mục sản phẩm"
+      header: "Thêm mã giảm giá"
     },
     {
       url: "/admin/discount/edit",
       component: EditDiscount,
-      header: "Chỉnh sửa danh mục sản phẩm"
+      header: "Chỉnh sửa mã giảm giá"
     },
     // Payment
     {
       url: "/admin/payment/list",
       component: Payment,
-      header: "Danh sách danh mục sản phẩm"
+      header: "Danh sách phương thức thanh toán"
     },
     {
       url: "/admin/payment/add",
       component: AddPayment,
-      header: "Thêm danh mục sản phẩm"
+      header: "Thêm phương thức thanh toán"
     },
     {
       url: "/admin/payment/edit",
       component: EditPayment,
-      header: "Chỉnh sửa danh mục sản phẩm"
+      header: "Chỉnh phương thức thanh toán"
     }
   ],
   getRoute: function(url) {

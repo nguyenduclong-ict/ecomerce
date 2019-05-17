@@ -3,9 +3,9 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import Axios from "axios";
 import { getHeader } from "../../helpers/Auth";
-var $ = window.$;
 
 const User = props => {
+  const $ = window.$;
   const [list, setList] = useState([]);
   const [checkall, setCheckall] = useState(false);
   const page = 100;
@@ -204,7 +204,6 @@ const User = props => {
           <div className="box box-default">
             <div className="box-header">
               <div className="box-header with-border">
-                <h3 className="box-title">Danh sách người dùng</h3>
                 <button
                   type="button"
                   className="btn btn-success pull-right"

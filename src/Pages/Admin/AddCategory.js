@@ -68,11 +68,6 @@ const AddCategory = () => {
   return (
     <section className="content">
       <div className="box box-primary">
-        <div className="box-header with-border">
-          <h3 className="box-title">Thêm danh mục</h3>
-        </div>
-        {/* <!-- /.box-header --> */}
-        {/* <!-- form start --> */}
         <form role="form">
           <div className="box-body">
             <div className="form-group">
