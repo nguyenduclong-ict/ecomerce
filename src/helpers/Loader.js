@@ -1,34 +1,51 @@
-export const loadCSS = function(href, id = 'load-top') {
-  console.log('load CSS : ' + href);
-  var oldsel = document.querySelector(`link[href='${href}']`);
-  if (oldsel) return;
-  var tag = document.createElement("link");
-  tag.async = false;
-  tag.rel = "stylesheet";
-  tag.href = href;
-  document.getElementById(id).appendChild(tag);
-};
+import $ from 'jquery'
 
-export const clearTop = () => {
-    // document.getElementById('load-top').removeChild();
-    document.querySelectorAll('#load-bottom > link, script').forEach(e => e.remove());
+class Loader {
+    static loadCSS = (hrefs, id = "load-top") => {
+        return new Promise(rj => {
+
+            let p = [];
+            hrefs.forEach(href => {
+                let tag = document.createElement('link');
+                tag.rel = "stylesheet";
+                tag.href = href;
+                document.getElementById(id).appendChild(tag);
+            });
+
+            rj();
+        })
+
+    }
+
+    static loadScript = async (srcs, id = "load-bottom") => {
+        return new Promise(rj => {
+
+            let p = [];
+            srcs.forEach(src => {
+                p.push($.ajax(src));
+            });
+
+            Promise.all(p)
+                .then(res => {
+                    res.forEach(script => {
+                        var tag = document.createElement("script");
+                        tag.type = "text/javascript";
+                        tag.innerHTML = script;
+                        document.getElementById(id).appendChild(tag);
+                    })
+                    rj();
+                })
+        })
+    }
+
+    /**
+     * 
+     * @param {Danh sach href cua css file} hrefs 
+     * @param {Danh sach src cua script file} srcs 
+     */
+    static load(hrefs = [], srcs = []) {
+        return Promise.all([this.loadCSS(hrefs), this.loadScript(srcs)]);
+    };
 }
 
-export const clearBottom = () => {
-    document.querySelectorAll('#load-top > link, script').forEach(e => e.remove());
-    // document.getElementById('load-bottom').removeChild();
-}
-
-export const clearAllScriptAndCSS = () => {
-    clearTop();
-    clearBottom();
-}
-
-export const loadScript = function(src, id='load-bottom') {
-  var oldsel = document.querySelector(`script[src='${src}']`);
-  if (oldsel) return;
-  var tag = document.createElement("script");
-  tag.async = false;
-  tag.src = src;
-  document.getElementById(id).appendChild(tag);
-};
+export default Loader

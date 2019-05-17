@@ -2,84 +2,88 @@ import React, { useState, useEffect } from "react";
 import "./Login.css";
 import Axios from "axios";
 import { login } from "../helpers/Auth";
-import { Redirect } from "react-router-dom";
-import { loadCSS, loadScript, clearAllScriptAndCSS } from "../helpers/Loader";
 import loading from "../components/Loading";
 import "../components/loading.css";
-const loadHtmlLibrary = () => {
-  clearAllScriptAndCSS();
-  // Head
-  loadCSS("lib/bootstrap/dist/css/bootstrap.min.css");
-  loadCSS("lib/font-awesome/css/font-awesome.min.css");
-  loadCSS("lib/Ionicons/css/ionicons.min.css");
-  loadCSS("dist/css/AdminLTE.css");
-  loadCSS("plugins/alertifyjs/css/alertify.min.css");
-  loadCSS("plugins/alertifyjs/css/themes/default.min.css");
-  loadCSS("plugins/jquery-confirm/jquery-confirm.min.css");
-  loadCSS("dist/css/skins/skin-blue.min.css");
-  loadCSS(
-    "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic"
-  );
+import $ from 'jquery';
+import Loader2 from '../helpers/Loader';
 
-  // Footer
-  loadScript("lib/jquery/dist/jquery.min.js");
-  loadScript("lib/bootstrap/dist/js/bootstrap.min.js");
-  loadScript("dist/js/adminlte.js");
-  loadScript("plugins/alertifyjs/alertify.min.js");
-  loadScript("plugins/jquery-confirm/jquery-confirm.min.js");
-  
-  window.onload = () => {
-    console.log('onload');
-    window.$.alertError = message => {
-      window.$.alert({
-        title: "Lỗi",
-        content: message,
-        type: "red",
-        animationSpeed: 100
-      });
-    };
-    
-    window.$.alertWarning = message => {
-      window.$.alert({
-        title: "Lưu ý",
-        content: message,
-        animationSpeed: 100,
-        type: "orange"
-      });
-    };
-    
-    window.$.alertSuccess = message => {
-      window.$.alert({
-        title: "Thành công",
-        content: message,
-        animationSpeed: 100,
-        type: "green"
-      });
-    };
-    // custorm library
-    window.$.showAlert = (title, message) => {
-      window.$.alert({
-        title: title,
-        content: message,
-        animation: "bottom",
-        animationSpeed: 200
-      });
-    };
+const hrefs = [
+  "lib/bootstrap/dist/css/bootstrap.min.css",
+  "lib/font-awesome/css/font-awesome.min.css",
+  "lib/Ionicons/css/ionicons.min.css",
+  "dist/css/AdminLTE.css",
+  "plugins/alertifyjs/css/alertify.min.css",
+  "plugins/alertifyjs/css/themes/default.min.css",
+  "plugins/jquery-confirm/jquery-confirm.min.css",
+  "dist/css/skins/skin-blue.min.css",
+  "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic"
+];
+
+const srcs = [
+  "lib/jquery/dist/jquery.min.js",
+  "lib/bootstrap/dist/js/bootstrap.min.js",
+  "dist/js/adminlte.js",
+  "plugins/alertifyjs/alertify.min.js",
+  "plugins/jquery-confirm/jquery-confirm.min.js"
+];
+function myfunction() {
+  window.$.alertError = message => {
+    window.$.alert({
+      title: "Lỗi",
+      content: message,
+      type: "red",
+      animationSpeed: 100
+    });
+  };
+
+  window.$.alertWarning = message => {
+    window.$.alert({
+      title: "Lưu ý",
+      content: message,
+      animationSpeed: 100,
+      type: "orange"
+    });
+  };
+
+  window.$.alertSuccess = message => {
+    window.$.alert({
+      title: "Thành công",
+      content: message,
+      animationSpeed: 100,
+      type: "green"
+    });
+  };
+  // custorm library
+  window.$.showAlert = (title, message) => {
+    window.$.alert({
+      title: title,
+      content: message,
+      animation: "bottom",
+      animationSpeed: 200
+    });
   };
 };
 
 const Login = props => {
-  // loadHtmlLibrary();
-  var $ = window.$;
-  const [isload, setIsload] = useState(true);
   useEffect(() => {
-  }, []);
-  
+    loading.show();
+    Promise.all([Loader2.loadCSS(hrefs), Loader2.loadScript(srcs)])
+      .then(() => {
+        console.log(window.$);
+        myfunction();
+        console.log(window.$.alertError);
+        loading.hide();
+        setIsload(false);
+      });
+  }, [])
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isload, setIsload] = useState(true);
+
   const submitForm = e => {
+    let $ = window.$;
     e.preventDefault();
-    console.log(process.config.loginUrl);
     Axios.post(process.config.loginUrl, {
       email: email,
       password: password

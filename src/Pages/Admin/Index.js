@@ -1,85 +1,86 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../../layouts/Header/Header";
 import Sidebar from "../../layouts/Sidebar/Sidebar";
 import PageHeader from "./PageHeader";
 import AdminRouter from "./router";
-import {
-  loadScript,
-  loadCSS,
-  clearAllScriptAndCSS
-} from "../../helpers/Loader";
+
+import Loader from "../../helpers/Loader";
 import loading from "../../components/Loading";
 import "../../components/loading.css";
-import Loader from "../../components/Loader";
 
-let hrefs = [];
-hrefs.push("lib/bootstrap/dist/css/bootstrap.min.css");
-hrefs.push("lib/font-awesome/css/font-awesome.min.css");
-hrefs.push("lib/Ionicons/css/ionicons.min.css");
-hrefs.push("dist/css/AdminLTE.css");
-hrefs.push("plugins/alertifyjs/css/alertify.min.css");
-hrefs.push("plugins/alertifyjs/css/themes/default.min.css");
-hrefs.push("plugins/jquery-confirm/jquery-confirm.min.css");
-hrefs.push("dist/css/skins/skin-blue.min.css");
-hrefs.push(
-  "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic"
-);
+const cssUrl = [
+  "lib/bootstrap/dist/css/bootstrap.min.css",
+  "lib/font-awesome/css/font-awesome.min.css",
+  "lib/Ionicons/css/ionicons.min.css",
+  "dist/css/AdminLTE.css",
+  "plugins/alertifyjs/css/alertify.min.css",
+  "plugins/alertifyjs/css/themes/default.min.css",
+  "plugins/jquery-confirm/jquery-confirm.min.css",
+  "dist/css/skins/skin-blue.min.css"
+]
 
-let srcs = [];
+const scriptUrl = [
+  "lib/jquery/dist/jquery.min.js",
+  "lib/bootstrap/dist/js/bootstrap.min.js",
+  "dist/js/adminlte.js",
+  "plugins/alertifyjs/alertify.min.js",
+  "plugins/jquery-confirm/jquery-confirm.min.js"
+]
 
-// Footer
-srcs.push("lib/jquery/dist/jquery.min.js");
-srcs.push("lib/bootstrap/dist/js/bootstrap.min.js");
-srcs.push("dist/js/adminlte.js");
-srcs.push("plugins/alertifyjs/alertify.min.js");
-srcs.push("plugins/jquery-confirm/jquery-confirm.min.js");
-// Add js and css to html
-const addJsAndCss = async () => {
-  clearAllScriptAndCSS();
 
-  window.onload = () => {
-    window.$.alertError = message => {
-      window.$.alert({
-        title: "Lỗi",
-        content: message,
-        type: "red",
-        animationSpeed: 100
-      });
-    };
-
-    window.$.alertWarning = message => {
-      window.$.alert({
-        title: "Lưu ý",
-        content: message,
-        animationSpeed: 100,
-        type: "orange"
-      });
-    };
-
-    window.$.alertSuccess = message => {
-      window.$.alert({
-        title: "Thành công",
-        content: message,
-        animationSpeed: 100,
-        type: "green"
-      });
-    };
-    // custorm library
-    window.$.showAlert = (title, message) => {
-      window.$.alert({
-        title: title,
-        content: message,
-        animation: "bottom",
-        animationSpeed: 200
-      });
-    };
+function myFunction() {
+  window.$.alertError = message => {
+    window.$.alert({
+      title: "Lỗi",
+      content: message,
+      type: "red",
+      animationSpeed: 100
+    });
   };
-};
-// Add JS and CSS
-console.log("aaa");
 
-// Index Component
+  window.$.alertWarning = message => {
+    window.$.alert({
+      title: "Lưu ý",
+      content: message,
+      animationSpeed: 100,
+      type: "orange"
+    });
+  };
+
+  window.$.alertSuccess = message => {
+    window.$.alert({
+      title: "Thành công",
+      content: message,
+      animationSpeed: 100,
+      type: "green"
+    });
+  };
+  // custorm library
+  window.$.showAlert = (title, message) => {
+    window.$.alert({
+      title: title,
+      content: message,
+      animation: "bottom",
+      animationSpeed: 200
+    });
+  };
+  loading.hide();
+}
+
+
+
 const Index = props => {
+
+  const [isload, setIsload] = useState(true);
+
+  useEffect(() => {
+    loading.show();
+    Loader.load(cssUrl, scriptUrl)
+      .then(() => {
+        setIsload(false);
+        loading.hide();
+      })
+  }, [])
   // Get Query from url
   const getQuery = str => {
     let query = str.replace("?", "");
@@ -95,8 +96,7 @@ const Index = props => {
   //
   const query = getQuery(props.location.search);
   const match = props.match;
-  let page = AdminRouter.getRoute(match.url);
-  console.log(page);
+  const page = AdminRouter.getRoute(match.url);
   //Init menu sidebar
   const initMenu = () => {
     return [
@@ -132,9 +132,8 @@ const Index = props => {
     ];
   };
 
-  return (
+  return !isload ? (
     <div>
-      <Loader hrefs={hrefs}></Loader>
       <Header url="/admin/dashboard" />
       <Sidebar menu={initMenu} />
       <div className="content-wrapper" style={{ minHeight: "619px" }}>
@@ -145,9 +144,8 @@ const Index = props => {
         />
         {page ? <page.component query={query} params={match.params} /> : ""}
       </div>
-      <Loader srcs={srcs}></Loader>
     </div>
-  )
+  ) : null;
 };
 
 export default Index;
