@@ -3,7 +3,6 @@ import axios from "axios";
 import { getHeader } from "../../helpers/Auth";
 
 const EditPayment = props => {
-  const $ = window.$;
   const [name, setName] = useState();
   const [description, setDescription] = useState();
   const [code, setCode] = useState();
@@ -46,7 +45,7 @@ const EditPayment = props => {
       .then(res => {
         console.log(res);
         if (res.data.ok === 1)
-          $.alert({
+          window.$.alert({
             title: "Thành công",
             content:
               res.data.message || "Thêm phương thức thanh toán thành công",
@@ -54,7 +53,7 @@ const EditPayment = props => {
             animationSpeed: 100
           });
         else {
-          $.alert({
+          window.$.alert({
             title: "Thất bại",
             content: res.data.message || "Có lỗi xảy ra, vui lòng thử lại sau!",
             type: "red",

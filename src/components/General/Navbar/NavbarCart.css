@@ -1,0 +1,7 @@
+#dropdown-cart {
+    top : auto;
+    left: 50% !important;
+    transform: translateX(-50%);
+    height: 100px;
+    background-color: white;
+}

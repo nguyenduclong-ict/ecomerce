@@ -6,7 +6,6 @@ import { getHeader } from "../../helpers/Auth";
 import { Link } from "react-router-dom";
 
 const Discount = props => {
-  var $ = window.$;
   const [list, setList] = useState([]);
   const [checkall, setCheckall] = useState(false);
   const page = 100;
@@ -35,7 +34,7 @@ const Discount = props => {
 
   const onChangeStatus = (id, status) => {
     let ids = [id];
-    $.confirm({
+    window.$.confirm({
       title: "Chú ý",
       content: (status ? "block" : "unBlock") + " mã giảm giá này?",
       animationSpeed: 100,
@@ -52,7 +51,7 @@ const Discount = props => {
                   return e;
                 });
                 setList([...list]);
-                $.alertSuccess((status ? "block" : "unblock") + " thành công!");
+                window.$.alertSuccess((status ? "block" : "unblock") + " thành công!");
               }
             }
           );
@@ -70,7 +69,7 @@ const Discount = props => {
     let ids = mark.map(e => e._id);
     // post block / unblock
 
-    $.confirm({
+    window.$.confirm({
       title: "Chú ý",
       content: (status ? "block" : "unBlock") + " toàn bộ?",
       animationSpeed: 100,
@@ -82,7 +81,7 @@ const Discount = props => {
             { ids, status },
             { headers: getHeader() }
           ).then(res => {
-            if (res.data.ok == 1) $.alertSuccess("Thành công");
+            if (res.data.ok == 1) window.$.alertSuccess("Thành công");
             setList([
               ...list.map(e => {
                 if (ids.includes(e._id)) e.status = status;
@@ -119,7 +118,7 @@ const Discount = props => {
       console.log(result.data);
       if(search) setList([...result.data]);
       else setList([...list, ...result.data]);
-      if (result.data == 0 && !search ) window.$.alertWarning("Đã load hết dữ liệu");
+      if (result.data == 0 && !search ) window.window.$.alertWarning("Đã load hết dữ liệu");
     });
   };
   const onCheckAllChange = e => {

@@ -6,7 +6,6 @@ import { getHeader } from "../../helpers/Auth";
 import { Link } from "react-router-dom";
 
 const Payment = () => {
-  var $ = window.$;
   const [list, setList] = useState([]);
   const [checkall, setCheckall] = useState(false);
   const page = 100;
@@ -28,7 +27,7 @@ const Payment = () => {
   // Thay doi trang thai
   const onChangeStatus = (id, isShow) => {
     console.log(isShow);
-    $.confirm({
+    window.$.confirm({
       title: "Chú ý",
       content: (isShow ? "Unblock" : "Block") + " mục này?",
       animationSpeed: 100,
@@ -49,7 +48,7 @@ const Payment = () => {
               });
               console.log(list);
               setList([...list]);
-              $.alert({
+              window.$.alert({
                 title: "Thành công",
                 content: (isShow ? "unblock" : "block") + " thành công!",
                 type: "green",
@@ -70,7 +69,7 @@ const Payment = () => {
     let ids = mark.map(e => e._id);
     // post block / unblock
 
-    $.confirm({
+    window.$.confirm({
       title: "Chú ý",
       content: (isShow ? "UnBlock" : "Block") + " toàn bộ?",
       animationSpeed: 100,
@@ -82,7 +81,7 @@ const Payment = () => {
             { ids: ids, isShow: isShow },
             { headers: getHeader() }
           ).then(res => {
-            if (res.data.ok == 1) $.alert("Thành công");
+            if (res.data.ok == 1) window.$.alert("Thành công");
             setList([
               ...list.map(e => {
                 if (ids.includes(e._id)) e.isShow = isShow;
@@ -109,7 +108,7 @@ const Payment = () => {
       });
       console.log(result.data);
       setList([...list, ...result.data]);
-      if (result.data == 0) window.$.alert("Đã load hết dữ liệu");
+      if (result.data == 0) window.window.$.alert("Đã load hết dữ liệu");
     });
   };
   const onCheckAllChange = e => {

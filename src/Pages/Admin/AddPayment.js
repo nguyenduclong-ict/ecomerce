@@ -30,7 +30,7 @@ const AddPayment = () => {
       .then(res => {
         console.log(res);
         if (res.data.ok === 1)
-          $.alert({
+          window.$.alert({
             title: "Thành công",
             content:
               res.data.message || "Thêm phương thức thanh toán thành công",
@@ -38,7 +38,7 @@ const AddPayment = () => {
             animationSpeed: 100
           });
         else {
-          $.alert({
+          window.$.alert({
             title: "Thất bại",
             content: res.data.message || "Có lỗi xảy ra, vui lòng thử lại sau!",
             type: "red",

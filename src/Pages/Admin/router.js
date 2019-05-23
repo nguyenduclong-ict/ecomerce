@@ -13,6 +13,8 @@ import EditCategory from "./EditCategory";
 import Discount from "./Discount";
 import AddDiscount from "./AddDiscount";
 import EditDiscount from "./EditDiscount";
+import Profile from "./Profile";
+import Error from "../Error";
 
 const router = {
   routers: [
@@ -74,11 +76,17 @@ const router = {
       url: "/admin/payment/edit",
       component: EditPayment,
       header: "Chỉnh phương thức thanh toán"
+    },
+    {
+      url: "/admin/profile",
+      component: Profile,
+      header: "Thông tin tài khoản"
     }
   ],
-  getRoute: function(url) {
+  getRoute: function (url) {
     let router = this.routers.find(e => url === e.url);
-    return router;
+    console.log(router);
+    return (router ? router : {component : Error, header : "404", code : 404});
   }
 };
 

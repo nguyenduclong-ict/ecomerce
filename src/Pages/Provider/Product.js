@@ -5,8 +5,11 @@ import Axios from "axios";
 import { getHeader } from "../../helpers/Auth";
 import { Link } from "react-router-dom";
 
-var $ = window.$;
 const Product = () => {
+  // URL
+  const URL_GET_LIST = process.config.apiUrl + "/provider/product/list";
+  const URL_BLOCK = process.config.apiUrl + "/provider/product/show";
+  // State
   const [list, setList] = useState([]);
   const [checkall, setCheckall] = useState(false);
   const page = 100;
@@ -28,19 +31,14 @@ const Product = () => {
   // Thay doi trang thai
   const onChangeStatus = (id, isShow) => {
     console.log(isShow);
-    $.confirm({
+    window.$.confirm({
       title: "Chú ý",
       content: (isShow ? "Unblock" : "Block") + " mục này?",
       animationSpeed: 100,
       type: "orange",
       buttons: {
         ok: () => {
-          let url = process.config.apiUrl + "/admin/payment/change-display";
-          Axios.post(
-            url,
-            { ids: [id], isShow: isShow },
-            { headers: getHeader() }
-          ).then(res => {
+          Axios.post(URL_BLOCK, { ids: [id], isShow: isShow }, { headers: getHeader() }).then(res => {
             console.log(res);
             if (res.data.ok === 1) {
               list.map(e => {
@@ -49,7 +47,7 @@ const Product = () => {
               });
               console.log(list);
               setList([...list]);
-              $.alert({
+              window.$.alert({
                 title: "Thành công",
                 content: (isShow ? "unblock" : "block") + " thành công!",
                 type: "green",
@@ -70,25 +68,24 @@ const Product = () => {
     let ids = mark.map(e => e._id);
     // post block / unblock
 
-    $.confirm({
+    window.$.confirm({
       title: "Chú ý",
       content: (isShow ? "UnBlock" : "Block") + " toàn bộ?",
       animationSpeed: 100,
       type: "orange",
       buttons: {
         ok: () => {
-          Axios.post(
-            process.config.apiUrl + "/admin/payment/change-display",
-            { ids: ids, isShow: isShow },
-            { headers: getHeader() }
-          ).then(res => {
-            if (res.data.ok == 1) $.alert("Thành công");
-            setList([
-              ...list.map(e => {
-                if (ids.includes(e._id)) e.isShow = isShow;
-                return e;
-              })
-            ]);
+          Axios.post(URL_BLOCK, { ids: ids, isShow: isShow }, { headers: getHeader()}).then(res => {
+            console.log(res.data);
+            if (res.data.ok == 1) {
+              window.$.alertSuccess("Thành công");
+              setList([
+                ...list.map(e => {
+                  if (ids.includes(e._id)) e.isShow = isShow;
+                  return e;
+                })
+              ]);
+            } else window.$.alertError("Thất bại");
           });
         },
         cancel: () => {
@@ -98,8 +95,7 @@ const Product = () => {
     });
   };
   const getList = () => {
-    let url =
-      process.config.apiUrl + `/admin/payment/list/${list.length}-${page}`;
+    let url = `${URL_GET_LIST}?from=${list.length}&page=${page}`;
     Axios.get(url, {
       headers: getHeader()
     }).then(result => {
@@ -149,19 +145,13 @@ const Product = () => {
 
   const columns = [
     {
-      Header: (
-        <input type="checkbox" checked={checkall} onChange={onCheckAllChange} />
-      ),
+      Header: <input type="checkbox" checked={checkall} onChange={onCheckAllChange} />,
       Cell: v => {
         let row = v.row._original;
         return (
           <div style={{ textAlign: "center" }}>
             {" "}
-            <input
-              type="checkbox"
-              checked={row.check}
-              onChange={() => onCheckBoxChange(row._id)}
-            />
+            <input type="checkbox" checked={row.check} onChange={() => onCheckBoxChange(row._id)} />
           </div>
         );
       },
@@ -169,24 +159,51 @@ const Product = () => {
       sortable: false
     },
     {
-      Header: "Name",
+      Header: "Tên",
       accessor: "name",
       filterable: true
     },
     {
-      Header: "Code",
-      accessor: "code",
+      Header: "Danh mục",
+      accessor: "category",
       filterable: true
     },
     {
-      Header: "Description",
+      Header: "Mô tả",
       accessor: "description",
       filterable: true
     },
     {
-      Header: "Status",
-      accessor: "isShow",
+      Header: "Số lượng",
+      width: 70,
+      accessor: "quantity",
+      filterable: true
+    },
+    {
+      Header: "Sale",
       width: 50,
+      Cell: v => {
+        let row = v.row._original;
+        return (
+          <div style={{ textAlign: "center", color: row.isSale ? "yellow" : "gray" }}>
+            <i class="fa fa-circle" aria-hidden="true" />
+          </div>
+        );
+      }
+    },
+    {
+      Header: "%",
+      width: 50,
+      accessor: "sale",
+      Cell: v => {
+        let row = v.row._original;
+        return Number(row.sale) * 100;
+      }
+    },
+    {
+      Header: "Trạng thái",
+      accessor: "isShow",
+      width: 100,
       Cell: v => {
         let row = v.row._original;
         return (
@@ -201,7 +218,7 @@ const Product = () => {
       }
     },
     {
-      Header: "Control",
+      Header: "Tùy chọn",
       width: 70,
       Cell: v => {
         let row = v.row._original;
@@ -222,40 +239,33 @@ const Product = () => {
           <div className="box box-default">
             <div className="box-header">
               <div className="box-header with-border">
-                    <button
-                      type="button"
-                      className="btn btn-success pull-right"
-                      onClick={() => getList()}
-                    >
-                      <i className="fa fa-refresh" /> Load more
-                    </button>
+                <button type="button" className="btn btn-success pull-right" onClick={() => getList()}>
+                  <i className="fa fa-refresh" /> Load more
+                </button>
 
-                    <Link
-                      to="/admin/payment/add"
-                      className="btn btn-mgr btn-success pull-right"
-                    >
-                      <i className="fa fa-plus" /> Add
-                    </Link>
+                <Link to="/provider/product/add" className="btn btn-mgr btn-success pull-right">
+                  <i className="fa fa-plus" /> Add
+                </Link>
 
-                    {show && (
-                      <button
-                        type="button"
-                        className="btn btn-mgr btn-warning pull-right"
-                        onClick={() => onBlockMultiple(false)}
-                      >
-                        <i className="fa fa-lock" /> Block
-                      </button>
-                    )}
+                {show && (
+                  <button
+                    type="button"
+                    className="btn btn-mgr btn-warning pull-right"
+                    onClick={() => onBlockMultiple(false)}
+                  >
+                    <i className="fa fa-lock" /> Block
+                  </button>
+                )}
 
-                    {show && (
-                      <button
-                        type="button"
-                        onClick={() => onBlockMultiple(true)}
-                        className="btn btn-mgr btn-primary pull-right"
-                      >
-                        <i className="fa fa-unlock" /> Unblock
-                      </button>
-                    )}
+                {show && (
+                  <button
+                    type="button"
+                    onClick={() => onBlockMultiple(true)}
+                    className="btn btn-mgr btn-primary pull-right"
+                  >
+                    <i className="fa fa-unlock" /> Unblock
+                  </button>
+                )}
               </div>
             </div>
             <div className="box-body">

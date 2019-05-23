@@ -5,7 +5,6 @@ import Axios from "axios";
 import { getHeader } from "../../helpers/Auth";
 
 const User = props => {
-  const $ = window.$;
   const [list, setList] = useState([]);
   const [checkall, setCheckall] = useState(false);
   const page = 100;
@@ -26,7 +25,7 @@ const User = props => {
 
   const onChangeStatus = (id, isBlock) => {
     console.log(id, isBlock);
-    $.confirm({
+    window.$.confirm({
       title: "Chú ý",
       content: (isBlock ? "block" : "unBlock") + " tài khoản này?",
       animationSpeed: 100,
@@ -46,7 +45,7 @@ const User = props => {
                 return e;
               });
               setList([...list]);
-              $.alert({
+              window.$.alert({
                 title: "Thanh cong",
                 content: (isBlock ? "block" : "unblock") + " thành công!",
                 type: "green",
@@ -67,7 +66,7 @@ const User = props => {
     let ids = mark.map(e => e._id);
     // post block / unblock
 
-    $.confirm({
+    window.$.confirm({
       title: "Chú ý",
       content: (isBlock ? "block" : "unBlock") + " toàn bộ?",
       animationSpeed: 100,
@@ -79,7 +78,7 @@ const User = props => {
             { ids: ids, isBlock: isBlock },
             { headers: getHeader() }
           ).then(res => {
-            if (res.data.ok == 1) $.alert("Thành công");
+            if (res.data.ok == 1) window.$.alert("Thành công");
             setList([
               ...list.map(e => {
                 if (ids.includes(e._id)) e.isBlock = isBlock;

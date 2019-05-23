@@ -4,8 +4,7 @@ import Axios from "axios";
 import { login } from "../helpers/Auth";
 import loading from "../components/Loading";
 import "../components/loading.css";
-import $ from 'jquery';
-import Loader2 from '../helpers/Loader';
+import Loader from "../helpers/Loader";
 
 const hrefs = [
   "lib/bootstrap/dist/css/bootstrap.min.css",
@@ -62,20 +61,17 @@ function myfunction() {
       animationSpeed: 200
     });
   };
-};
+}
 
 const Login = props => {
   useEffect(() => {
     loading.show();
-    Promise.all([Loader2.loadCSS(hrefs), Loader2.loadScript(srcs)])
-      .then(() => {
-        console.log(window.$);
-        myfunction();
-        console.log(window.$.alertError);
-        loading.hide();
-        setIsload(false);
-      });
-  }, [])
+    Loader.load(hrefs, srcs, () => {
+      loading.hide();
+      setIsload(false);
+      myfunction();
+    });
+  }, []);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -91,11 +87,12 @@ const Login = props => {
       .then(res => {
         if (res.data.result) {
           login(res.data.token, res.data.role, res.data.imageCode);
-          if (res.data.role === "admin")
-            window.location.href = "/admin/dashboard";
-          else if (res.data.role === "provider")
-            window.location.href = "/provider/dashboard";
-          else if (res.data.role === "customer") window.location.href = "/";
+          if (res.data.role === "admin") window.location.href = "/admin/dashboard";
+          else if (res.data.role === "provider") window.location.href = "/provider/dashboard";
+          else if (res.data.role === "customer") {
+            localStorage.removeItem('cart');
+            window.location.href = "/";
+          }
         } else $.alertError(res.data.message);
       })
       .catch(err => {
@@ -103,7 +100,6 @@ const Login = props => {
         $.alertError("Lỗi kết nối");
       });
   };
-
 
   return isload == false ? (
     <div className="login-box">
@@ -144,20 +140,14 @@ const Login = props => {
                     aria-disabled="false"
                     style={{ position: "relative" }}
                   />
-                  <input
-                    type="checkbox"
-                    style={{ position: "unset", margin: 0 }}
-                  />
+                  <input type="checkbox" style={{ position: "unset", margin: 0 }} />
                   <span>Nhớ tài khoản</span>
                 </label>
               </div>
             </div>
             {/* <!-- /.col --> */}
             <div className="col-xs-4">
-              <button
-                className="btn btn-primary btn-block btn-flat"
-                onClick={submitForm}
-              >
+              <button className="btn btn-primary btn-block btn-flat" onClick={submitForm}>
                 Đăng nhập
               </button>
             </div>

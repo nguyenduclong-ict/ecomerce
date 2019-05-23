@@ -27,7 +27,7 @@ const Sidebar = props => {
   const [menu, setMenu] = useState(props.menu);
   return (
     <aside className="main-sidebar">
-      <section className="sidebar">
+      <section className="sidebar" style={{height : "auto"}}>
         <UserPanel />
         <SidebarForm />
         <SidebarMenu

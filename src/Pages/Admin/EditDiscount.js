@@ -8,33 +8,32 @@ import { getHeader } from "../../helpers/Auth";
 import { resolve } from "url";
 import { Promise, reject } from "q";
 
-const EditDiscount = ({params}) => {
-  const $ = window.$;
+const EditDiscount = ({query}) => {
   const [value, setValue] = useState(0);
   const [products, setProducts] = useState([]);
   const [list, setList] = useState([]);
   const [startDate, setStartDate] = useState(Date.now());
   const [endDate, setEndDate] = useState(Date.now());
 
-  const postAdd = e => {
+  const postEdit = e => {
     e.preventDefault();
     products.map(es => es._id);
     let body = { value, products, startDate, endDate };
-    let url = process.config.apiUrl + "/admin/discount/add";
+    let url = process.config.apiUrl + "/admin/discount/edit/" + query.id;
     axios
       .post(url, body, { headers: getHeader() })
       .then(res => {
         console.log(res.data);
-        if (res.data.ok === 1) $.alertSuccess("Thêm mã giảm giá thành công!");
+        if (res.data.ok === 1) window.$.alertSuccess("Chỉnh sửa giảm giá thành công!");
         else throw new Error();
       })
       .catch(err => {
-        $.alertError("Có lỗi xảy ra, thêm thất bại!");
+        window.$.alertError("Có lỗi xảy ra, sửa thông tin thất bại!");
       });
   };
 
   const getData = () => {
-    let url = process.config.apiUrl + "/admin/discount/detail/" + params.id;
+    let url = process.config.apiUrl + "/admin/discount/detail/" + query.id;
     axios
       .get(url, { headers: getHeader() })
       .then(res => {
@@ -45,7 +44,7 @@ const EditDiscount = ({params}) => {
           return e;
         });
         console.log(res.data);
-        setProducts([...res.data.products]);
+        setProducts([...res.data.products.map(e =>  {return {_id : e._id, name :e.name}})]);
         setStartDate(new Date(res.data.startDate));
         setEndDate(new Date(res.data.endDate));
         setValue(res.data.value);
@@ -67,7 +66,10 @@ const EditDiscount = ({params}) => {
     setProducts([...products]);
   };
   const selectProductChange = e => {
-    if (products.indexOf(e) < 0) setProducts([e, ...products]);
+    console.log(e);
+    console.log(products);
+    
+    if (!products.find(e2 => e.value === e2._id)) setProducts([{_id : e.value, name : e.name}, ...products]);
   };
 
   const getListProducts = async name =>
@@ -145,10 +147,10 @@ const EditDiscount = ({params}) => {
                   return (
                     <div>
                       <li className="list-group-item">
-                        {e.label}{" "}
+                        {e.name}{" "}
                         <i
                           className="fa fa-close red pull-right"
-                          onClick={() => removeProductSelected(e)}
+                          onClick={() => removeProductSelected(e._id)}
                         />
                       </li>
                     </div>
@@ -176,8 +178,8 @@ const EditDiscount = ({params}) => {
           {/* <!-- /.box-body --> */}
 
           <div className="box-footer">
-            <button type="button" onClick={postAdd} className="btn btn-primary">
-              Thêm
+            <button type="button" onClick={postEdit} className="btn btn-primary">
+              Lưu
             </button>
           </div>
         </form>

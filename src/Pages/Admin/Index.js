@@ -7,6 +7,7 @@ import AdminRouter from "./router";
 import Loader from "../../helpers/Loader";
 import loading from "../../components/Loading";
 import "../../components/loading.css";
+import './Index.css';
 
 const cssUrl = [
   "lib/bootstrap/dist/css/bootstrap.min.css",
@@ -29,6 +30,7 @@ const scriptUrl = [
 
 
 function myFunction() {
+  window.$('body').css('background-color', '#222d32');
   window.$.alertError = message => {
     window.$.alert({
       title: "Lỗi",
@@ -75,11 +77,11 @@ const Index = props => {
 
   useEffect(() => {
     loading.show();
-    Loader.load(cssUrl, scriptUrl)
-      .then(() => {
-        setIsload(false);
-        loading.hide();
-      })
+    Loader.load(cssUrl, scriptUrl, (event) => {
+      myFunction();
+      loading.hide();
+      setIsload(false);
+    })
   }, [])
   // Get Query from url
   const getQuery = str => {
@@ -134,7 +136,7 @@ const Index = props => {
 
   return !isload ? (
     <div>
-      <Header url="/admin/dashboard" />
+      <Header url="/admin/dashboard" history={props.history}/>
       <Sidebar menu={initMenu} />
       <div className="content-wrapper" style={{ minHeight: "619px" }}>
         <PageHeader

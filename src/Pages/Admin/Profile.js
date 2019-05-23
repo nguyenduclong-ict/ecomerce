@@ -2,9 +2,6 @@ import React, {useState, useEffect} from 'react'
 import { getUserInfo, getHeader } from '../../helpers/Auth';
 import axios from "axios";
 
-const $ = window.$;
-
-
 const Profile = (props) => {
     const [user, setUser] = useState({});
     const [name, setName] = useState();
@@ -42,7 +39,7 @@ const Profile = (props) => {
       .then(res => {
         console.log( res);
         if (res.data.ok === 1)
-          $.alert({
+          window.$.alert({
             title: "Thành công",
             content:
               res.data.message || "Thêm phương thức thanh toán thành công",
@@ -50,7 +47,7 @@ const Profile = (props) => {
             animationSpeed: 100
           });
         else {
-          $.alert({
+          window.$.alert({
             title: "Thất bại",
             content: res.data.message || "Có lỗi xảy ra, vui lòng thử lại sau!",
             type: "red",
@@ -62,7 +59,7 @@ const Profile = (props) => {
 
   return (
     <section className="content">
-      <div className="box box-primary">
+      <div className="box box-primary">admin/category/list
         <div className="box-header with-border">
           <h3 className="box-title">Thêm danh mục</h3>
         </div>
@@ -142,3 +139,4 @@ const Profile = (props) => {
 }
 
 export default Profile
+ 

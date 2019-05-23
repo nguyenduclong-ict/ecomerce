@@ -5,11 +5,8 @@ import Select from "react-select";
 import AsyncSelect from "react-select/lib/Async";
 import axios from "axios";
 import { getHeader } from "../../helpers/Auth";
-import { resolve } from "url";
-import { Promise, reject } from "q";
 
 const AddDiscount = () => {
-  const $ = window.$;
   const [value, setValue] = useState(0);
   const [products, setProducts] = useState([]);
   const [list, setList] = useState([]);
@@ -25,11 +22,11 @@ const AddDiscount = () => {
       .post(url, body, { headers: getHeader() })
       .then(res => {
         console.log(res.data);
-        if (res.data.ok === 1) $.alertSuccess("Thêm mã giảm giá thành công!");
+        if (res.data.ok === 1) window.$.alertSuccess("Thêm mã giảm giá thành công!");
         else throw new Error();
       })
       .catch(err => {
-        $.alertError("Có lỗi xảy ra, thêm thất bại!");
+        window.$.alertError("Có lỗi xảy ra, thêm thất bại!");
       });
   };
 

@@ -1,41 +1,23 @@
-import $ from 'jquery'
-
 class Loader {
-    static loadCSS = (hrefs, id = "load-top") => {
-        return new Promise(rj => {
-
-            let p = [];
-            hrefs.forEach(href => {
-                let tag = document.createElement('link');
-                tag.rel = "stylesheet";
-                tag.href = href;
-                document.getElementById(id).appendChild(tag);
-            });
-
-            rj();
-        })
-
+    static loadCSS = (hrefs, id = "load-top", onload) => {
+        hrefs.forEach(href => {
+            let tag = document.createElement('link');
+            tag.rel = "stylesheet";
+            tag.href = href;
+            document.getElementById(id).appendChild(tag);
+        });
+        window.addEventListener('load', onload);
     }
 
-    static loadScript = async (srcs, id = "load-bottom") => {
-        return new Promise(rj => {
+    static loadScript = (srcs, id = "load-bottom", onload) => {
+        srcs.forEach(src => {
+            let tag = document.createElement('script');
+            tag.async = false; // quan trong
+            tag.src = src;
+            document.getElementById(id).appendChild(tag);
+        });
 
-            let p = [];
-            srcs.forEach(src => {
-                p.push($.ajax(src));
-            });
-
-            Promise.all(p)
-                .then(res => {
-                    res.forEach(script => {
-                        var tag = document.createElement("script");
-                        tag.type = "text/javascript";
-                        tag.innerHTML = script;
-                        document.getElementById(id).appendChild(tag);
-                    })
-                    rj();
-                })
-        })
+        window.addEventListener('load', onload);
     }
 
     /**
@@ -43,9 +25,19 @@ class Loader {
      * @param {Danh sach href cua css file} hrefs 
      * @param {Danh sach src cua script file} srcs 
      */
-    static load(hrefs = [], srcs = []) {
-        return Promise.all([this.loadCSS(hrefs), this.loadScript(srcs)]);
-    };
-}
+    static load(hrefs = [], srcs = [], onload) {
+       this.loadCSS(hrefs);
+       this.loadScript(srcs);
+       window.addEventListener('load', onload);
+    };  
 
+    static clearCSS() {
+        document.getElementById('load-top').innerHTML = null;
+    }
+
+
+    static clearScript() {
+        document.getElementById('load-bottom').innerHTML = null;
+    }
+}
 export default Loader
