@@ -47,7 +47,7 @@ const Banner = props => {
       items[index].active = false;
       items[(items.length + index - 1) % items.length].active = true;
     }
-    // console.log(items);
+    console.log(items);
     setItems([...items]);
   };
 

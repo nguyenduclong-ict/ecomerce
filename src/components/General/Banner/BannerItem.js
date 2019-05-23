@@ -10,7 +10,7 @@ const BannerItem = props => {
     Transfer.pushMessage(chanel.CART, {
       type: "object",
       action: "add to cart",
-      data: [{_id : item._id, name : item.title}]
+      data: [{ _id: item._id, name: item.title }]
     });
   };
 
@@ -19,8 +19,16 @@ const BannerItem = props => {
   return (
     <div className={"carousel-item " + (item.active ? "active" : "")}>
       <div className="row">
-        <div className="col-md-8 offset-md-4">
-          <img src={item.img || "General/img/banner/banner-img.png"} alt="..." />
+        <div className="col-md-8 offset-md-6">
+          <img
+            src={
+              item.images[0]
+                ? process.config.apiUrl + "/file?filename=" + item.images[0]
+                : "General/img/banner/banner-img.png"
+            }
+            alt="..."
+            style={{maxWidth : "500px"}}
+          />
         </div>
 
         <div className="col-md-4 offset-md-1" style={{ position: "absolute" }}>

@@ -1,8 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import './ListItem.css'
+import Transfer from '../../../helpers/Transfer';
+import chanel from '../../../helpers/chanel';
 
 const ListItem = ({ data }) => {
+
+  const addToCart = (e) => {
+    e.preventDefault();
+    Transfer.pushMessage(chanel.CART, {
+      type: "object",
+      action: "add to cart",
+      data: [{ _id: data._id, name: data.title }]
+    });
+  }
   return (
     <div className="list-item-container col-lg-3 col-sm-12 col-md-6">
       <div className="single-product">
@@ -20,9 +31,9 @@ const ListItem = ({ data }) => {
           </div>
           <p>{data.ordered} đã bán</p>
           <div className="prd-bottom">
-            <a href="#" className="social-info">
+            <a href="#" className="social-info" onClick={addToCart}>
               <span className="fa fa-cart-plus" />
-              <p className="hover-text">Thêm</p>
+              <p className="hover-text" >Thêm</p>
             </a>
             <a href="#" className="social-info">
               <span className="fa fa-eye" />

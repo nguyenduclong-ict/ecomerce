@@ -108,11 +108,7 @@ const NavbarCart = () => {
           </span>
         </a>
 
-        <ul
-          className="dropdown-menu"
-          id="dropdown-cart"
-          style={{ minHeight: "100px", height: "auto", backgroundColor: "white" }}
-        >
+        <ul className="dropdown-menu" id="dropdown-cart" style={ulStyle}>
           {cart.products.map((e, index) => (
             <div>
               <a className="dropdown-item">
@@ -125,9 +121,15 @@ const NavbarCart = () => {
                   <i class="fa fa-times pull-right" aria-hidden="true" />
                 </button>
               </a>
-              {index >= 0 && index < cart.products.length - 1 ? <div class="dropdown-divider" /> : null}
+              {index >= 0 && index < cart.products.length ? <div class="dropdown-divider" /> : null}
             </div>
           ))}
+          <div >
+            <button style={{marginBottom : "5px", marginRight : "5px"}} class="btn btn-yellow pull-right">
+              <i class="fa fa-shopping-cart" aria-hidden="true" />
+              Xem giỏ hàng
+            </button>
+          </div>
         </ul>
       </li>
     </ul>
@@ -135,3 +137,13 @@ const NavbarCart = () => {
 };
 
 export default NavbarCart;
+
+const ulStyle = {
+  minHeight: "100px",
+  height: "auto",
+  backgroundColor: "white",
+  minWidth: "300px",
+  width: "auto",
+  borderRadius: "5px",
+  marginTop: "10px"
+};
