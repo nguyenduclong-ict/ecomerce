@@ -6,7 +6,7 @@ import axios from "axios";
 import { RegExp } from "core-js";
 const List = () => {
   // filter  : { key : string }
-  const [filter, setFilter] = useState({});
+  const [filter, setFilter] = useState({sort : ''});
   const [categories, setCategories] = useState([]);
   const [list, setList] = useState([]);
   const cbRef = useRef(false);
@@ -25,7 +25,6 @@ const List = () => {
   useEffect(() => {
     getListProduct();
   }, [filter]);
-
 
   // Lay danh sach theo dieu kien loc trong bien filter
   const getListProduct = () => {
@@ -63,21 +62,26 @@ const List = () => {
     filter.category = category;
     setFilter({ ...filter });
   }, [categories]);
+
+  //
   const sortChange = e => {
-    if (!filter.sort) filter.sort = "";
     let { name, value } = e.target;
     if (!value) value = -1;
     let regex;
-
     // Sort by So luong ban hoac ngay dang
-    if (["oredred", "created"].includes(name)) {
-      regex = new RegExp("(ordered|created)" + "\\|" + ".{1,2}", "i");
+    if (name === 'ordered'|| name === 'created') {
+      regex = /(ordered|created)\|.{1,2}/g;
     } else {
-      regex = new RegExp(name + "\\|" + ".{1,2}", "i");
+      regex = new RegExp("(price)\\|.{1,2}", "g"); //price
+      console.log(regex);
     }
+    console.log(filter.sort);
     filter.sort = filter.sort.replace(regex, "");
+    console.log(filter.sort);
     filter.sort = `${name}|${value}|` + filter.sort;
+    console.log(filter.sort);
     filter.sort = filter.sort.replace(/\|*$/i, "");
+    console.log(filter.sort);
     setFilter({ ...filter });
   };
 
@@ -116,7 +120,7 @@ const List = () => {
               class="d-flex p-3"
               style={{ backgroundColor: "rgb(237, 237, 237)", marginTop: "7px", marginBottom: "7px", width: "100%" }}
             >
-              <div className="p-2" style={{width: "100%" }}>
+              <div className="p-2" style={{ width: "100%" }}>
                 <form className="form-inline" style={{ display: "inline" }}>
                   <div className="form-group">
                     <span style={{ marginRight: "15px" }}>Sắp xếp theo</span>
@@ -140,8 +144,8 @@ const List = () => {
                     </select>
 
                     {/* Pager */}
-                    <div className="col pull-right" style={{textAlign : "end"}}>
-                      <input type="button" class="btn btn-light" value="preview" style={{marginRight : "3px"}}/>
+                    <div className="col pull-right" style={{ textAlign: "end" }}>
+                      <input type="button" class="btn btn-light" value="preview" style={{ marginRight: "3px" }} />
                       <div class="btn-group btn-group-toggle" data-toggle="buttons">
                         <label class="btn btn-light">
                           <input type="radio" autocomplete="off" checked /> 1
@@ -156,7 +160,7 @@ const List = () => {
                           <input type="radio" autocomplete="off" /> ...
                         </label>
                       </div>
-                      <input type="button" class="btn btn-light" value="next" style={{marginLeft : "3px"}}/>
+                      <input type="button" class="btn btn-light" value="next" style={{ marginLeft: "3px" }} />
                     </div>
                   </div>
                 </form>
