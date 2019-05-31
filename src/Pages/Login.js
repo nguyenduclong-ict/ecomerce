@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Login.css";
 import Axios from "axios";
-import { login } from "../helpers/Auth";
+import { login, getHeader } from "../helpers/Auth";
 import loading from "../components/Loading";
 import "../components/loading.css";
 import Loader from "../helpers/Loader";
@@ -90,8 +90,15 @@ const Login = props => {
           if (res.data.role === "admin") window.location.href = "/admin/dashboard";
           else if (res.data.role === "provider") window.location.href = "/provider/dashboard";
           else if (res.data.role === "customer") {
-            localStorage.removeItem('cart');
-            window.location.href = "/";
+            // merge cart to server
+            let cart = JSON.parse(localStorage.getItem('cart')) || {};
+            let url = process.config.apiUrl + '/customer/cart/add-product';
+            // let body = {products : cart.products}
+            Axios.post(url, {products : cart.products || []}, {headers : getHeader()})
+            .then(() => {
+              localStorage.removeItem('cart');
+              window.location.href = "/";
+            })
           }
         } else $.alertError(res.data.message);
       })

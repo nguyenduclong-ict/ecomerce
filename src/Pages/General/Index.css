@@ -48,3 +48,16 @@
 .btn-fix-right {
   margin-right: 2px;
 }
+
+
+/* Cart Page */
+
+.cart-page.container{
+  margin-top: 200px;
+}
+
+.cart-page .my-list-item {
+  border-left: none;
+  border-right: none;
+  border-radius: 0px !important;
+}

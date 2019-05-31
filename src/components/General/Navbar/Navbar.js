@@ -2,6 +2,7 @@ import React from "react";
 import CategoryMenu from "./CategoryMenu";
 import NavbarCart from './NavbarCart'
 import NavbarSearch from "./NavbarSearch";
+import NavbarProfile from "./NavbarProfile";
 
 const Navbar = () => {
   return (
@@ -11,7 +12,7 @@ const Navbar = () => {
           <nav className="navbar navbar-expand-lg navbar-light main_box">
             <div className="container">
               {/* Brand and toggle get grouped for better mobile display */}
-              <a className="navbar-brand logo_h" href="index.html">
+              <a className="navbar-brand logo_h" href="/">
                 <img src="General/img/logo.png" />
               </a>
               <button
@@ -29,6 +30,7 @@ const Navbar = () => {
               <div className="collapse navbar-collapse offset" id="navbarSupportedContent">
                 <CategoryMenu />
                 <ul className="nav navbar-nav navbar-right">
+                  <NavbarProfile/>
                   <NavbarCart/>
                   <NavbarSearch/>
                 </ul>

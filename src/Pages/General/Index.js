@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "./Index.css";
 import "../../components/loading.css";
-
+import router from "./router";
 
 // or less ideally
-import myfunction from './myfunction'
+import myfunction from "./myfunction";
 import loading from "../../components/Loading";
 import Loader from "../../helpers/Loader";
 import Navbar from "../../components/General/Navbar/Navbar";
 import Banner from "../../components/General/Banner/Banner";
-import List from "../../components/General/List/List";
 
 const cssHrefs = [
   "General/css/linearicons.css",
@@ -45,7 +44,7 @@ const scriptSrcs = [
   // "General/js/main.js"
 ];
 
-const Index = () => {
+const Index = props => {
   const [isload, setIsload] = useState(true);
   useEffect(() => {
     loading.show();
@@ -56,11 +55,27 @@ const Index = () => {
     });
   }, []);
 
+  // Get Query from url
+  const getQuery = str => {
+    let query = str.replace("?", "");
+    let myRegex = /([^\&]*)\=([^\&]*)/g;
+    let result = {};
+    let match;
+    while ((match = myRegex.exec(query))) {
+      result[match[1]] = match[2];
+    }
+    return result;
+  };
+
+  const query = getQuery(props.location.search);
+  const match = props.match;
+  const page = router.getRoute(match.url);
+
   return !isload ? (
     <div>
       <Navbar />
-      <Banner />
-      <List />
+      {page.banner ? <Banner /> : null}
+      {page ? <page.component query={query} params={match.params} /> : null}
     </div>
   ) : null;
 };

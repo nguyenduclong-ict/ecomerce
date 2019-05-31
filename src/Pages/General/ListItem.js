@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import './ListItem.css'
-import Transfer from '../../../helpers/Transfer';
-import chanel from '../../../helpers/chanel';
+import Transfer from '../../helpers/Transfer';
+import chanel from '../../helpers/chanel';
 
 const ListItem = ({ data }) => {
 

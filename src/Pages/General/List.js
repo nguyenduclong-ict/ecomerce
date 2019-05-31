@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import ListItem from "./ListItem";
-import Transfer from "../../../helpers/Transfer";
-import chanel from "../../../helpers/chanel";
+import Transfer from "../../helpers/Transfer";
+import chanel from "../../helpers/chanel";
 import axios from "axios";
 import { RegExp } from "core-js";
 const List = () => {

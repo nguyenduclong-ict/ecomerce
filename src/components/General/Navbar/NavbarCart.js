@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Transfer from "../../../helpers/Transfer";
 import chanel from "../../../helpers/chanel";
 import { getHeader, getAuthInfo } from "../../../helpers/Auth";
+import {Link} from 'react-router-dom'
 import axios from "axios";
 import "./NavbarCart.css";
 
@@ -99,14 +100,14 @@ const NavbarCart = () => {
   return (
     <ul className="">
       <li className="nav-item submenu">
-        <a href="#" className="cart">
+        <Link to="/customer/cart" className="cart">
           <span className="fa fa-shopping-cart">
             &#32;
             <span style={{ lineHeight: "normal", color: "white" }} className="badge badge-danger">
               {cart.products.length}
             </span>
           </span>
-        </a>
+        </Link>
 
         <ul className="dropdown-menu" id="dropdown-cart" style={ulStyle}>
           {cart.products.map((e, index) => (

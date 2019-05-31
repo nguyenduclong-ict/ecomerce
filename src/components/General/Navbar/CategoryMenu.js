@@ -48,7 +48,7 @@ const CategoryMenu = () => {
         .map(e2 => (
           // Category lv1
           <li className="nav-item submenu">
-            <Link className="nav-link dropdown-toggle" to="#list-filter" onClick={e=>onMenuItemClick(e, e2)}>
+            <Link className="nav-link dropdown-toggle" to="/#list-filter" onClick={e=>onMenuItemClick(e, e2)}>
               {e2.name}
             </Link>
 
@@ -62,7 +62,7 @@ const CategoryMenu = () => {
                   })
                   .map(e4 => (
                     <li className="nav-item" onClick={e => onMenuItemClick(e, e4)}>
-                      <Link className="nav-link" to="#list-filter">
+                      <Link className="nav-link" to="/#list-filter">
                         {e4.name}
                       </Link>
                     </li>
@@ -74,7 +74,7 @@ const CategoryMenu = () => {
 
       {categories.filter(e => e.parentId == null).length > 5 ? (
         <li className="nav-item submenu dropdown">
-          <Link className="nav-link dropdown-toggle" data-toggle="dropdown" to="#list-filter">
+          <Link className="nav-link dropdown-toggle" data-toggle="dropdown" to="/#list-filter">
             Thêm ...
           </Link>
           {/* // Category lv2 */}
@@ -87,7 +87,7 @@ const CategoryMenu = () => {
               })
               .map(e4 => (
                 <li className="nav-item" onClick={e => onMenuItemClick(e, e4)}>
-                  <Link className="nav-link" to="#list-filter">
+                  <Link className="nav-link" to="/#list-filter">
                     {e4.name}
                   </Link>
                 </li>

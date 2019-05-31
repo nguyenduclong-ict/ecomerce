@@ -1,11 +1,18 @@
 import Index from "./Index";
+import List from "./List";
 
 const router = {
     routers: [
       {
         url: "/",
-        component: Index,
+        banner : true,
+        component: List,
         header: "Trang chủ"
+      },
+      {
+        url: "/product",
+        component: Index,
+        header: "Thông tin sản phẩm"
       }
     ],
     /**
