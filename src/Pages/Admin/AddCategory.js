@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { getHeader } from "../../helpers/Auth";
+const $ = window.$;
 
 const AddCategory = () => {
   const [name, setName] = useState();
@@ -47,14 +48,14 @@ const AddCategory = () => {
     axios.post(url, { name, parentId }, { headers: getHeader() }).then(res => {
       console.log(res);
       if (res.data.ok === 1)
-        window.$.alert({
+        $.alert({
           title: "Thành công",
           content: res.data.message || "Thêm thành công",
           type: "green",
           animationSpeed: 100
         });
       else {
-        window.$.alert({
+        $.alert({
           title: "Thất bại",
           content: res.data.message || "Có lỗi xảy ra, vui lòng thử lại sau!",
           type: "red",
@@ -67,6 +68,11 @@ const AddCategory = () => {
   return (
     <section className="content">
       <div className="box box-primary">
+        <div className="box-header with-border">
+          <h3 className="box-title">Thêm danh mục</h3>
+        </div>
+        {/* <!-- /.box-header --> */}
+        {/* <!-- form start --> */}
         <form role="form">
           <div className="box-body">
             <div className="form-group">
@@ -89,8 +95,6 @@ const AddCategory = () => {
                 value={parentId}
                 onChange={handleInputChange}
                 class="form-control"
-                on
-                onFocus={getList}
               >
                 {renderOptions()}
               </select>

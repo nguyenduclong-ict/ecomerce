@@ -15,6 +15,7 @@ import AddDiscount from "./AddDiscount";
 import EditDiscount from "./EditDiscount";
 import Profile from "./Profile";
 import Error from "../Error";
+import Log from "./Log";
 
 const router = {
   routers: [
@@ -80,6 +81,11 @@ const router = {
     {
       url: "/admin/profile",
       component: Profile,
+      header: "Thông tin tài khoản"
+    },
+    {
+      url: "/admin/log",
+      component: Log,
       header: "Thông tin tài khoản"
     }
   ],

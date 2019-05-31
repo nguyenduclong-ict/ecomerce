@@ -1,104 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Header from "../../layouts/Header/Header";
 import Sidebar from "../../layouts/Sidebar/Sidebar";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import Dashboard from "./Dashboard";
 import PageHeader from "./PageHeader";
-import AdminRouter from "./router";
+import Discount from "./Discount";
+import User from "./User";
+import Category from "./Category";
+import Payment from "./Payment";
+import AddPayment from "./AddPayment";
+import AddDiscount from "./AddDiscount";
+import AddUser from "./AddUser";
+import AddCategory from "./AddCategory";
+import EditPayment from "./EditPayment";
+import EditDiscount from "./EditDiscount";
+import Profile from "../../Pages/Admin/Profile";
 
-import Loader from "../../helpers/Loader";
-import loading from "../../components/Loading";
-import "../../components/loading.css";
-import './Index.css';
-
-const cssUrl = [
-  "lib/bootstrap/dist/css/bootstrap.min.css",
-  "lib/font-awesome/css/font-awesome.min.css",
-  "lib/Ionicons/css/ionicons.min.css",
-  "dist/css/AdminLTE.css",
-  "plugins/alertifyjs/css/alertify.min.css",
-  "plugins/alertifyjs/css/themes/default.min.css",
-  "plugins/jquery-confirm/jquery-confirm.min.css",
-  "dist/css/skins/skin-blue.min.css"
-]
-
-const scriptUrl = [
-  "lib/jquery/dist/jquery.min.js",
-  "lib/bootstrap/dist/js/bootstrap.min.js",
-  "dist/js/adminlte.js",
-  "plugins/alertifyjs/alertify.min.js",
-  "plugins/jquery-confirm/jquery-confirm.min.js"
-]
-
-
-function myFunction() {
-  window.$('body').css('background-color', '#222d32');
-  window.$.alertError = message => {
-    window.$.alert({
-      title: "Lỗi",
-      content: message,
-      type: "red",
-      animationSpeed: 100
-    });
-  };
-
-  window.$.alertWarning = message => {
-    window.$.alert({
-      title: "Lưu ý",
-      content: message,
-      animationSpeed: 100,
-      type: "orange"
-    });
-  };
-
-  window.$.alertSuccess = message => {
-    window.$.alert({
-      title: "Thành công",
-      content: message,
-      animationSpeed: 100,
-      type: "green"
-    });
-  };
-  // custorm library
-  window.$.showAlert = (title, message) => {
-    window.$.alert({
-      title: title,
-      content: message,
-      animation: "bottom",
-      animationSpeed: 200
-    });
-  };
-  loading.hide();
-}
-
-
-
-const Index = props => {
-
-  const [isload, setIsload] = useState(true);
-
-  useEffect(() => {
-    loading.show();
-    Loader.load(cssUrl, scriptUrl, (event) => {
-      myFunction();
-      loading.hide();
-      setIsload(false);
-    })
-  }, [])
-  // Get Query from url
-  const getQuery = str => {
-    let query = str.replace("?", "");
-    let myRegex = /([^\&]*)\=([^\&]*)/g;
-    let result = {};
-    let match;
-    while ((match = myRegex.exec(query))) {
-      result[match[1]] = match[2];
-    }
-    return result;
-  };
-
-  //
-  const query = getQuery(props.location.search);
+const Index = (props) => {
+  console.log(props);
   const match = props.match;
-  const page = AdminRouter.getRoute(match.url);
+  console.log(match);
   //Init menu sidebar
   const initMenu = () => {
     return [
@@ -134,20 +55,67 @@ const Index = props => {
     ];
   };
 
-  return !isload ? (
+  const getQueryValue = (query, key) => {
+    query = query.substring(1);
+    let list = query.split('=');
+    return list[list.indexOf(key) + 1];
+  }
+
+  // Phan route
+  const route = (params) => {
+    let page = {};
+    switch (params.page) {
+      case "dashboard":
+        page = <Dashboard />;
+        break;
+      case "payment":
+        if (params.p2 === "add") page = <AddPayment />;
+        else if (params.p2 === "edit") page = <EditPayment params={params}/>
+        else page = <Payment />;
+        break;
+      case "discount":
+        console.log(props.location);
+        if (params.p2 === "add") return  page = <AddDiscount /> ;
+        if (params.p2 === "edit") return  page = <EditDiscount params={{id : getQueryValue(props.location.search,'id')}} />;
+        else page = <Discount />;
+        break;
+      case "user":
+        if (params.p2 === "add") page = <AddUser />;
+        else page = <User />;
+        break;
+      case "category":
+        if (params.p2 === "add") page = <AddCategory />;
+        else page = <Category />;
+        break;
+        case 'profile' :
+          return page = <Profile params={{params}}/>
+        break;
+      default:
+        page = <Dashboard />;
+        break;
+    }
+    return page;
+  };
+
+  const getPageHeader = page => {
+    return page.charAt(0).toUpperCase() + page.slice(1);
+  };
+
+  return (
     <div>
-      <Header url="/admin/dashboard" history={props.history}/>
+      
+      <Header  history={props.history}/>
       <Sidebar menu={initMenu} />
       <div className="content-wrapper" style={{ minHeight: "619px" }}>
         <PageHeader
-          header={page ? page.header : ""}
+          header={getPageHeader(match.params.page)}
           subHeader="EcoStore"
           level={match.url}
         />
-        {page ? <page.component query={query} params={match.params} /> : ""}
+        {route(match.params)}
       </div>
     </div>
-  ) : null;
+  );
 };
 
 export default Index;

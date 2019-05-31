@@ -60,7 +60,7 @@ const Cart = () => {
                 {e.name}
               </Link>
               </div>
-              <button className="btn btn-primary pull-right" onClick={}> Đặt hàng ngay</button>
+              <button className="btn btn-primary pull-right" onClick={()=>{}}> Đặt hàng ngay</button>
             </div>
           ))}
         </div>

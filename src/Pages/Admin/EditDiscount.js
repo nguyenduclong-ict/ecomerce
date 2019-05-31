@@ -7,33 +7,34 @@ import axios from "axios";
 import { getHeader } from "../../helpers/Auth";
 import { resolve } from "url";
 import { Promise, reject } from "q";
+const $ = window.$;
 
-const EditDiscount = ({query}) => {
+const EditDiscount = ({params}) => {
   const [value, setValue] = useState(0);
   const [products, setProducts] = useState([]);
   const [list, setList] = useState([]);
   const [startDate, setStartDate] = useState(Date.now());
   const [endDate, setEndDate] = useState(Date.now());
 
-  const postEdit = e => {
+  const postAdd = e => {
     e.preventDefault();
     products.map(es => es._id);
     let body = { value, products, startDate, endDate };
-    let url = process.config.apiUrl + "/admin/discount/edit/" + query.id;
+    let url = process.config.apiUrl + "/admin/discount/add";
     axios
       .post(url, body, { headers: getHeader() })
       .then(res => {
         console.log(res.data);
-        if (res.data.ok === 1) window.$.alertSuccess("Chỉnh sửa giảm giá thành công!");
+        if (res.data.ok === 1) $.alertSuccess("Thêm mã giảm giá thành công!");
         else throw new Error();
       })
       .catch(err => {
-        window.$.alertError("Có lỗi xảy ra, sửa thông tin thất bại!");
+        $.alertError("Có lỗi xảy ra, thêm thất bại!");
       });
   };
 
   const getData = () => {
-    let url = process.config.apiUrl + "/admin/discount/detail/" + query.id;
+    let url = process.config.apiUrl + "/admin/discount/detail/" + params.id;
     axios
       .get(url, { headers: getHeader() })
       .then(res => {
@@ -44,7 +45,7 @@ const EditDiscount = ({query}) => {
           return e;
         });
         console.log(res.data);
-        setProducts([...res.data.products.map(e =>  {return {_id : e._id, name :e.name}})]);
+        setProducts([...res.data.products]);
         setStartDate(new Date(res.data.startDate));
         setEndDate(new Date(res.data.endDate));
         setValue(res.data.value);
@@ -66,10 +67,7 @@ const EditDiscount = ({query}) => {
     setProducts([...products]);
   };
   const selectProductChange = e => {
-    console.log(e);
-    console.log(products);
-    
-    if (!products.find(e2 => e.value === e2._id)) setProducts([{_id : e.value, name : e.name}, ...products]);
+    if (products.indexOf(e) < 0) setProducts([e, ...products]);
   };
 
   const getListProducts = async name =>
@@ -93,6 +91,7 @@ const EditDiscount = ({query}) => {
     <section className="content">
       <div className="box box-primary">
         <div className="box-header with-border">
+          <h3 className="box-title">Thêm phương thức thanh toán</h3>
         </div>
         {/* <!-- /.box-header --> */}
         {/* <!-- form start --> */}
@@ -147,10 +146,10 @@ const EditDiscount = ({query}) => {
                   return (
                     <div>
                       <li className="list-group-item">
-                        {e.name}{" "}
+                        {e.label}{" "}
                         <i
                           className="fa fa-close red pull-right"
-                          onClick={() => removeProductSelected(e._id)}
+                          onClick={() => removeProductSelected(e)}
                         />
                       </li>
                     </div>
@@ -178,8 +177,8 @@ const EditDiscount = ({query}) => {
           {/* <!-- /.box-body --> */}
 
           <div className="box-footer">
-            <button type="button" onClick={postEdit} className="btn btn-primary">
-              Lưu
+            <button type="button" onClick={postAdd} className="btn btn-primary">
+              Thêm
             </button>
           </div>
         </form>

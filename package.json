@@ -3,26 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^4.0.1",
     "axios": "^0.18.0",
-    "bootstrap": "^4.3.1",
-    "filepond": "^4.4.7",
-    "filepond-plugin-image-exif-orientation": "^1.0.6",
-    "filepond-plugin-image-preview": "^4.1.1",
-    "fs": "^0.0.1-security",
-    "jquery": "^3.4.1",
     "react": "^16.8.6",
-    "react-bootstrap": "^1.0.0-beta.8",
     "react-datepicker": "^2.5.0",
     "react-dom": "^16.8.6",
-    "react-dropzone": "^10.1.5",
-    "react-filepond": "^7.0.1",
-    "react-grid-gallery": "^0.5.4",
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.0",
     "react-select": "^2.4.3",
-    "react-table": "^6.10.0",
-    "redux": "^4.0.1"
+    "react-table": "^6.10.0"
   },
   "scripts": {
     "start": "react-scripts start",

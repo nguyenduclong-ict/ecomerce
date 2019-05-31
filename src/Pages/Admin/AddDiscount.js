@@ -5,6 +5,9 @@ import Select from "react-select";
 import AsyncSelect from "react-select/lib/Async";
 import axios from "axios";
 import { getHeader } from "../../helpers/Auth";
+import { resolve } from "url";
+import { Promise, reject } from "q";
+const $ = window.$;
 
 const AddDiscount = () => {
   const [value, setValue] = useState(0);
@@ -22,11 +25,11 @@ const AddDiscount = () => {
       .post(url, body, { headers: getHeader() })
       .then(res => {
         console.log(res.data);
-        if (res.data.ok === 1) window.$.alertSuccess("Thêm mã giảm giá thành công!");
+        if (res.data.ok === 1) $.alertSuccess("Thêm mã giảm giá thành công!");
         else throw new Error();
       })
       .catch(err => {
-        window.$.alertError("Có lỗi xảy ra, thêm thất bại!");
+        $.alertError("Có lỗi xảy ra, thêm thất bại!");
       });
   };
 
@@ -63,6 +66,11 @@ const AddDiscount = () => {
   return (
     <section className="content">
       <div className="box box-primary">
+        <div className="box-header with-border">
+          <h3 className="box-title">Thêm phương thức thanh toán</h3>
+        </div>
+        {/* <!-- /.box-header --> */}
+        {/* <!-- form start --> */}
         <form role="form">
           <div className="box-body">
             <div className="form-group">

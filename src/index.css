@@ -1,29 +1,7 @@
 .-pagination {
-  height: min-content;
+	height: min-content;
 }
 
 .input-group .form-control {
-  z-index: 0 !important;
-}
-.padding-top {
-  padding-top: 8px;
-}
-
-.padding {
-  padding: 8px;
-}
-
-.btn-mgr {
-  margin-right: 3px;
-}
-
-.btn-mgl {
-  margin-left: 3px;
-}
-
-.slimScrollDiv {
-  position: relative;
-  overflow: hidden;
-  width: auto;
-  height: 100vh;
+	z-index: 0 !important;
 }

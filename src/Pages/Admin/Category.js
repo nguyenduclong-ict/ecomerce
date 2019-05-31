@@ -3,7 +3,8 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import Axios from "axios";
 import { getHeader } from "../../helpers/Auth";
-import { Link } from "react-router-dom";
+import {Link} from 'react-router-dom'
+var $ = window.$;
 
 const Category = () => {
   const [list, setList] = useState([]);
@@ -25,10 +26,8 @@ const Category = () => {
   };
 
   const onChangeStatus = (id, isShow) => {
-
-
     console.log(isShow);
-    window.$.confirm({
+    $.confirm({
       title: "Chú ý",
       content: (isShow ? "block" : "unBlock") + " danh mục này?",
       animationSpeed: 100,
@@ -49,7 +48,7 @@ const Category = () => {
               });
               console.log(list);
               setList([...list]);
-              window.$.alert({
+              $.alert({
                 title: "Thanh cong",
                 content: (isShow ? "block" : "unblock") + " thành công!",
                 type: "green",
@@ -70,7 +69,7 @@ const Category = () => {
     let ids = mark.map(e => e._id);
     // post block / unblock
 
-    window.$.confirm({
+    $.confirm({
       title: "Chú ý",
       content: (isShow ? "UnBlock" : "Block") + " toàn bộ?",
       animationSpeed: 100,
@@ -82,7 +81,7 @@ const Category = () => {
             { ids: ids, isShow: isShow },
             { headers: getHeader() }
           ).then(res => {
-            if (res.data.ok == 1) window.$.alert("Thành công");
+            if (res.data.ok == 1) $.alert("Thành công");
             setList([
               ...list.map(e => {
                 if (ids.includes(e._id)) e.isShow = isShow;
@@ -109,7 +108,7 @@ const Category = () => {
       });
       console.log(result.data);
       setList([...list, ...result.data]);
-      if (result.data == 0) window.window.$.alert("Đã load hết dữ liệu");
+      if (result.data == 0) window.$.alert("Đã load hết dữ liệu");
     });
   };
   const onCheckAllChange = e => {
@@ -175,8 +174,8 @@ const Category = () => {
     },
     {
       Header: "Parent",
-      accessor: "parentId.name",
-      filterable: true,
+      accessor : 'parentId.name',
+      filterable : true,
       Cell: v => {
         let row = v.row._original;
         if (row.parentId !== null) return row.parentId.name;
@@ -184,9 +183,9 @@ const Category = () => {
       }
     },
     {
-      Header: "Control",
+      Header: "Status",
       accessor: "isShow",
-      width: 100,
+      width: 50,
       Cell: v => {
         let row = v.row._original;
         return (
@@ -196,7 +195,6 @@ const Category = () => {
               style={{ color: !row.isShow ? "red" : "green" }}
               onClick={() => onChangeStatus(row._id, !row.isShow)}
             />
-            <Link to={"/admin/category/edit?id=" + row._id} className="btn fa fa-edit"/>
           </div>
         );
       }
@@ -209,47 +207,44 @@ const Category = () => {
           <div className="box box-default">
             <div className="box-header">
               <div className="box-header with-border">
-                <div className="row">
-                  <div className="col-md-6 col-6 pull-right padding">
-                    <button
-                      type="button"
-                      className="btn btn-success pull-right"
-                      onClick={() => getList()}
-                    >
-                      <i className="fa fa-refresh" /> Load more
-                    </button>
+                <h3 className="box-title">Danh sách danh mục</h3>
+                <button
+                  type="button"
+                  className="btn btn-success pull-right"
+                  onClick={() => getList()}
+                >
+                  <i className="fa fa-refresh" /> Load more
+                </button>
 
-                    <Link
-                      style={{ marginRight: "2px" }}
-                      to="/admin/category/add"
-                      className="btn btn-success pull-right"
-                    >
-                      <i className="fa fa-plus" /> Add
-                    </Link>
+                <Link
+                style={{ marginRight: "2px" }}
+                    to="/admin/category/add"
+                  className="btn btn-success pull-right"
+                >
+                  <i className="fa fa-plus" /> Add
+                </Link>
 
-                    {show && (
-                      <button
-                        style={{ marginRight: "2px" }}
-                        type="button"
-                        className="btn btn-warning pull-right"
-                        onClick={() => onBlockMultiple(false)}
-                      >
-                        <i className="fa fa-lock" /> Block
-                      </button>
-                    )}
+                {show && (
+                  <button
+                    style={{ marginRight: "2px" }}
+                    type="button"
+                    className="btn btn-warning pull-right"
+                    onClick={() => onBlockMultiple(false)}
+                  >
+                    <i className="fa fa-lock" /> Block
+                  </button>
+                )}
 
-                    {show && (
-                      <button
-                        style={{ marginRight: "2px" }}
-                        type="button"
-                        onClick={() => onBlockMultiple(true)}
-                        className="btn btn-primary pull-right"
-                      >
-                        <i className="fa fa-unlock" /> Unblock
-                      </button>
-                    )}
-                  </div>
-                </div>
+                {show && (
+                  <button
+                    style={{ marginRight: "2px" }}
+                    type="button"
+                    onClick={() => onBlockMultiple(true)}
+                    className="btn btn-primary pull-right"
+                  >
+                    <i className="fa fa-unlock" /> Unblock
+                  </button>
+                )}
               </div>
             </div>
             <div className="box-body">

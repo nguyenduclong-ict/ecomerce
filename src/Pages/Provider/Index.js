@@ -8,7 +8,6 @@ import Loader from "../../helpers/Loader";
 import loading from "../../components/Loading";
 import "../../components/loading.css";
 import './Index.css'
-import $ from 'jquery'
 
 const cssUrl = [
   "lib/bootstrap/dist/css/bootstrap.min.css",

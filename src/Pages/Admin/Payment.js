@@ -5,6 +5,7 @@ import Axios from "axios";
 import { getHeader } from "../../helpers/Auth";
 import { Link } from "react-router-dom";
 
+var $ = window.$;
 const Payment = () => {
   const [list, setList] = useState([]);
   const [checkall, setCheckall] = useState(false);
@@ -27,7 +28,7 @@ const Payment = () => {
   // Thay doi trang thai
   const onChangeStatus = (id, isShow) => {
     console.log(isShow);
-    window.$.confirm({
+    $.confirm({
       title: "Chú ý",
       content: (isShow ? "Unblock" : "Block") + " mục này?",
       animationSpeed: 100,
@@ -48,7 +49,7 @@ const Payment = () => {
               });
               console.log(list);
               setList([...list]);
-              window.$.alert({
+              $.alert({
                 title: "Thành công",
                 content: (isShow ? "unblock" : "block") + " thành công!",
                 type: "green",
@@ -69,7 +70,7 @@ const Payment = () => {
     let ids = mark.map(e => e._id);
     // post block / unblock
 
-    window.$.confirm({
+    $.confirm({
       title: "Chú ý",
       content: (isShow ? "UnBlock" : "Block") + " toàn bộ?",
       animationSpeed: 100,
@@ -81,7 +82,7 @@ const Payment = () => {
             { ids: ids, isShow: isShow },
             { headers: getHeader() }
           ).then(res => {
-            if (res.data.ok == 1) window.$.alert("Thành công");
+            if (res.data.ok == 1) $.alert("Thành công");
             setList([
               ...list.map(e => {
                 if (ids.includes(e._id)) e.isShow = isShow;
@@ -108,7 +109,7 @@ const Payment = () => {
       });
       console.log(result.data);
       setList([...list, ...result.data]);
-      if (result.data == 0) window.window.$.alert("Đã load hết dữ liệu");
+      if (result.data == 0) window.$.alert("Đã load hết dữ liệu");
     });
   };
   const onCheckAllChange = e => {
@@ -205,10 +206,10 @@ const Payment = () => {
       Cell: v => {
         let row = v.row._original;
         return (
-          <div style={{ textAlign: "center" }}>
+          <div style={{textAlign: "center"}}>
             <Link to={"/admin/payment/edit/" + row._id}>
-              <i className="btn fa fa-edit" />
-            </Link>
+              <i className="btn fa fa-edit" /> 
+              </Link>
           </div>
         );
       }
@@ -222,47 +223,43 @@ const Payment = () => {
             <div className="box-header">
               <div className="box-header with-border">
                 <h3 className="box-title">Danh sách phương thức thanh toán</h3>
-                <div className="row">
-                  <div className="col-md-6 pull-right padding">
-                    <button
-                      type="button"
-                      className="btn btn-success pull-right"
-                      onClick={() => getList()}
-                    >
-                      <i className="fa fa-refresh" /> Load more
-                    </button>
+                <button
+                  type="button"
+                  className="btn btn-success pull-right"
+                  onClick={() => getList()}
+                >
+                  <i className="fa fa-refresh" /> Load more
+                </button>
 
-                    <Link
-                      style={{ marginRight: "2px" }}
-                      to="/admin/payment/add"
-                      className="btn btn-success pull-right"
-                    >
-                      <i className="fa fa-plus" /> Add
-                    </Link>
+                <Link
+                style={{ marginRight: "2px" }}
+                    to="/admin/payment/add"
+                  className="btn btn-success pull-right"
+                >
+                  <i className="fa fa-plus" /> Add
+                </Link>
 
-                    {show && (
-                      <button
-                        style={{ marginRight: "2px" }}
-                        type="button"
-                        className="btn btn-warning pull-right"
-                        onClick={() => onBlockMultiple(false)}
-                      >
-                        <i className="fa fa-lock" /> Block
-                      </button>
-                    )}
+                {show && (
+                  <button
+                    style={{ marginRight: "2px" }}
+                    type="button"
+                    className="btn btn-warning pull-right"
+                    onClick={() => onBlockMultiple(false)}
+                  >
+                    <i className="fa fa-lock" /> Block
+                  </button>
+                )}
 
-                    {show && (
-                      <button
-                        style={{ marginRight: "2px" }}
-                        type="button"
-                        onClick={() => onBlockMultiple(true)}
-                        className="btn btn-primary pull-right"
-                      >
-                        <i className="fa fa-unlock" /> Unblock
-                      </button>
-                    )}
-                  </div>
-                </div>
+                {show && (
+                  <button
+                    style={{ marginRight: "2px" }}
+                    type="button"
+                    onClick={() => onBlockMultiple(true)}
+                    className="btn btn-primary pull-right"
+                  >
+                    <i className="fa fa-unlock" /> Unblock
+                  </button>
+                )}
               </div>
             </div>
             <div className="box-body">

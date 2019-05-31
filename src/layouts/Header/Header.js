@@ -5,7 +5,9 @@ class Header extends React.Component {
 
   constructor(props) {
     super(props);
+    console.log(props);  
   }
+  
 
   render() {
 
@@ -13,7 +15,7 @@ class Header extends React.Component {
     return (
       <header className="Header main-header">
         {/* <!-- Logo --> */}
-        <Link to={this.props.url} className="logo">
+        <Link to="/admin/dashboard" className="logo">
           {/* mini logo for sidebar mini 50x50 pixels */}
           <span className="logo-mini">
             <b>E</b>S

@@ -3,7 +3,8 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import Axios from "axios";
 import { getHeader } from "../../helpers/Auth";
-import { Link } from "react-router-dom";
+import {Link} from 'react-router-dom';
+var $ = window.$;
 
 const Discount = props => {
   const [list, setList] = useState([]);
@@ -34,7 +35,7 @@ const Discount = props => {
 
   const onChangeStatus = (id, status) => {
     let ids = [id];
-    window.$.confirm({
+    $.confirm({
       title: "Chú ý",
       content: (status ? "block" : "unBlock") + " mã giảm giá này?",
       animationSpeed: 100,
@@ -51,7 +52,7 @@ const Discount = props => {
                   return e;
                 });
                 setList([...list]);
-                window.$.alertSuccess((status ? "block" : "unblock") + " thành công!");
+                $.alertSuccess((status ? "block" : "unblock") + " thành công!");
               }
             }
           );
@@ -69,7 +70,7 @@ const Discount = props => {
     let ids = mark.map(e => e._id);
     // post block / unblock
 
-    window.$.confirm({
+    $.confirm({
       title: "Chú ý",
       content: (status ? "block" : "unBlock") + " toàn bộ?",
       animationSpeed: 100,
@@ -81,7 +82,7 @@ const Discount = props => {
             { ids, status },
             { headers: getHeader() }
           ).then(res => {
-            if (res.data.ok == 1) window.$.alertSuccess("Thành công");
+            if (res.data.ok == 1) $.alertSuccess("Thành công");
             setList([
               ...list.map(e => {
                 if (ids.includes(e._id)) e.status = status;
@@ -115,10 +116,9 @@ const Discount = props => {
         e.endDate = new Date(e.endDate).toLocaleDateString();
         return e;
       });
-      console.log(result.data);
-      if(search) setList([...result.data]);
-      else setList([...list, ...result.data]);
-      if (result.data == 0 && !search ) window.window.$.alertWarning("Đã load hết dữ liệu");
+      console.log([...list, ...result.data]);
+      setList([...list, ...result.data]);
+      if (result.data == 0) window.$.alertWarning("Đã load hết dữ liệu");
     });
   };
   const onCheckAllChange = e => {
@@ -253,7 +253,7 @@ const Discount = props => {
             <Link
               className={"btn fa fa-edit"}
               style={{ color: "blue" }}
-              to={"/admin/discount/edit?id=" + row._id}
+              to={'/admin/discount/edit?id=' + row._id}
             />
           </div>
         );
@@ -267,8 +267,9 @@ const Discount = props => {
           <div className="box box-default">
             <div className="box-header">
               <div className="box-header with-border">
-                <div class="row">
-                  <div class="col-md-6 padding-top">
+                <h3 className="box-title">Danh sách người dùng</h3>
+                <div class="form-group row margin">
+                  <div class="col-md-6">
                     <input
                       type="text"
                       class="form-control"
@@ -277,7 +278,7 @@ const Discount = props => {
                       onKeyDown={onSearch}
                     />
                   </div>
-                  <div className="col-md-6 padding-top">
+                  <div className="col-md-6">
                     <button
                       type="button"
                       className="btn btn-success pull-right"

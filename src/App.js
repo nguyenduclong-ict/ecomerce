@@ -2,25 +2,25 @@ import React from "react";
 import "./App.css";
 import { BrowserRouter as Router, Route , Switch} from "react-router-dom";
 import Login from "./Pages/Login";
-import AdminIndex from "./Pages/Admin/Index";
-import ProviderIndex from './Pages/Provider/Index'
-import CustomerIndex from "./Pages/Customer/Index";
+import Index from "./Pages/Admin/Index";
 import PrivateRoute from "./components/PrivateRoute";
-import GeneralIndex from './Pages/General/Index'
+import createBrowserHistory from 'history/createBrowserHistory'
+export const history = createBrowserHistory();
+
 class App extends React.Component {
   constructor(props) {
     super(props);
   }
+  
   render() {
     return (
       <div className="App">
         <Router>
           <Switch>
             <Route path="/login" exact component={Login} />
-            <PrivateRoute path={"/admin*"}  component={AdminIndex} role="admin"/>
-            <PrivateRoute  path={"/provider*"} component={ProviderIndex} role="provider"/>
-            <PrivateRoute  path={"/customer*"} component={CustomerIndex} role="customer"/>
-            <Route  path={'/*'} component={GeneralIndex}/>
+            <PrivateRoute  history={this.props.history} path="/admin/:page/:p2/:p3" component={Index} role="admin"/>
+            <PrivateRoute history={this.props.history} path="/admin/:page/:p2" component={Index} role="admin"/>
+            <PrivateRoute history={this.props.history} path="/admin/:page" component={Index} role="admin"/>
           </Switch>
         </Router>
       </div>

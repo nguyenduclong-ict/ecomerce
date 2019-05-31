@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { getHeader } from "../../helpers/Auth";
+const $ = window.$;
 
 const EditPayment = props => {
   const [name, setName] = useState();
@@ -45,7 +46,7 @@ const EditPayment = props => {
       .then(res => {
         console.log(res);
         if (res.data.ok === 1)
-          window.$.alert({
+          $.alert({
             title: "Thành công",
             content:
               res.data.message || "Thêm phương thức thanh toán thành công",
@@ -53,7 +54,7 @@ const EditPayment = props => {
             animationSpeed: 100
           });
         else {
-          window.$.alert({
+          $.alert({
             title: "Thất bại",
             content: res.data.message || "Có lỗi xảy ra, vui lòng thử lại sau!",
             type: "red",
@@ -67,6 +68,7 @@ const EditPayment = props => {
     <section className="content">
       <div className="box box-primary">
         <div className="box-header with-border">
+          <h3 className="box-title">Chỉnh sửa phương thức thanh toán</h3>
         </div>
         {/* <!-- /.box-header --> */}
         {/* <!-- form start --> */}

@@ -1,7 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import './Index.css';
-
 const PageHeader = (props, { match }) => {
   let p = props.level.split("/");
   p.shift();
