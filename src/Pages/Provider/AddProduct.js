@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { getHeader } from "../../helpers/Auth";
 import Gallery from "react-grid-gallery";
+import { alertSuccess, alertError } from "../../helpers/Alert";
 
 const AddProduct = () => {
   const fileInput = useRef();
@@ -23,7 +24,6 @@ const AddProduct = () => {
   const [isShow, setisShow] = useState(true);
   const [files, setFiles] = useState([]);
   const handleInputChange = e => {
-    console.log(e.target);
     switch (e.target.name) {
       case "name":
         setName(e.target.value);
@@ -54,7 +54,9 @@ const AddProduct = () => {
         break;
       case "images":
         let f = [];
-        e.target.files.forEach(e => f.push(e));
+        for (let i = 0; i < e.target.files.length; i++) {
+          f.push(e.target.files[i]);
+        }
         setFiles([...f]);
         break;
     }
@@ -86,7 +88,18 @@ const AddProduct = () => {
     if (name) e.preventDefault();
     else return;
     let url = process.config.apiUrl + "/provider/product/add";
-    let data = { name, categoryId, list, price, isSale, sale : Number(sale) / 100, quantity, maxOrder, description, isShow };
+    let data = {
+      name,
+      categoryId,
+      list,
+      price,
+      isSale,
+      sale: Number(sale) / 100,
+      quantity,
+      maxOrder,
+      description,
+      isShow
+    };
     axios.post(url, data, { headers: getHeader() }).then(res => {
       console.log(res);
       if (res.data.ok === 1 && images.length > 0) {
@@ -96,17 +109,16 @@ const AddProduct = () => {
         let filename = images.map(e => e.filename);
         let tags = [];
         let isPublic = true;
-        let data  = {productId, subOwner, filename, tags, isPublic};
+        let data = { productId, subOwner, filename, tags, isPublic };
         let headers = getHeader();
-        axios.post(URL_UPDATE_FILES, data, {headers})
-          .then(res => {
-            console.log(res);
-            window.$.alertSuccess('Thêm sản phẩm thành công');
-          })
+        axios.post(URL_UPDATE_FILES, data, { headers }).then(res => {
+          console.log(res);
+          alertSuccess("Thêm sản phẩm thành công");
+        });
       } else if (res.data.ok == 0) {
-        window.$.alertError("Có lỗi xảy ra, vui lòng thử lại sau!");
+        alertError("Có lỗi xảy ra, vui lòng thử lại sau!");
       } else if (res.data.ok == 1 && images.length < 1) {
-        window.$.alertSuccess("Thêm thành công");
+        alertSuccess("Thêm thành công");
       }
     });
   };

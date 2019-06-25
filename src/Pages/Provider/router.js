@@ -2,9 +2,10 @@ import Product from "./Product";
 import AddProduct from "./AddProduct";
 import EditProduct from "./EditProduct";
 import Order from "./Order";
-import EditOrder from './EditOrder'
-import Error from '../Error'
+import EditOrder from "./EditOrder";
+import Error from "../Error";
 import Dashboard from "../Admin/Dashboard";
+import Profile from "./Profile";
 
 const router = {
   routers: [
@@ -37,12 +38,17 @@ const router = {
       url: "/provider/order/edit",
       component: EditOrder,
       header: "Chỉnh sửa thông tin đơn hàng"
+    },
+    {
+      url: "/provider/profile",
+      component: Profile,
+      header: "Chỉnh sửa thông tài khoản"
     }
   ],
-  getRoute: function (url) {
+  getRoute: function(url) {
     let router = this.routers.find(e => url === e.url);
     console.log(router);
-    return (router ? router : {component : Error, header : "404", code : 404});
+    return router ? router : { component: Error, header: "404", code: 404 };
   }
 };
 

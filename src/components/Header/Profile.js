@@ -1,16 +1,14 @@
 import React, {useState, useEffect} from 'react'
-import { getUserInfo } from '../../helpers/Auth';
+import { getUserInfo, getAuthInfo } from '../../helpers/Auth';
 import {logout} from '../../helpers/Auth'
 
 const Profile = (props) => {
-  console.log(props);
     const [avatar, setAvatar] = useState(props.avatar || "dist/img/user.png");
     const [name, setName] = useState(props.name || "No Name");
     const [status, setStatus] = useState(props.status || 0);
 
     useEffect(() => {
         getUserInfo().then(res => {
-            console.log(res.data);
             setStatus(1);
             setName(res.data.info.name);
             
@@ -21,19 +19,20 @@ const Profile = (props) => {
     const signOut = (e) => {
         e.preventDefault();
         logout();
-        window.location.href='/login'
+        props.history.push('/login');
     }
     
     const proFile = (e) => {
         e.preventDefault();
-        props.history.push('/admin/profile')
+        let {role }  = getAuthInfo();
+        props.history.push(`/${role}/profile`)
     }
 
   return (
       <li className="dropdown user user-menu">
             <a href="#" className="dropdown-toggle" data-toggle="dropdown">
               <img src={avatar} className="user-image" alt="User Image" />
-              <span className="hidden-xs">{name}</span>
+              <span className="hidden-xs">{name || "No name"}</span>
             </a>
             <ul className="dropdown-menu">
 

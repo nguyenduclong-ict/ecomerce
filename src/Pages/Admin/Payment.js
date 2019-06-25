@@ -4,6 +4,9 @@ import "react-table/react-table.css";
 import Axios from "axios";
 import { getHeader } from "../../helpers/Auth";
 import { Link } from "react-router-dom";
+import { alertSuccess, showAlert } from "../../helpers/Alert";
+import config from "../../helpers/config";
+import http from "../../helpers/http";
 
 const Payment = () => {
   const [list, setList] = useState([]);
@@ -35,11 +38,7 @@ const Payment = () => {
       buttons: {
         ok: () => {
           let url = process.config.apiUrl + "/admin/payment/change-display";
-          Axios.post(
-            url,
-            { ids: [id], isShow: isShow },
-            { headers: getHeader() }
-          ).then(res => {
+          Axios.post(url, { ids: [id], isShow: isShow }, { headers: getHeader() }).then(res => {
             console.log(res);
             if (res.data.ok === 1) {
               list.map(e => {
@@ -48,7 +47,7 @@ const Payment = () => {
               });
               console.log(list);
               setList([...list]);
-              window.$.alert({
+              alertSuccess({
                 title: "Thành công",
                 content: (isShow ? "unblock" : "block") + " thành công!",
                 type: "green",
@@ -81,7 +80,7 @@ const Payment = () => {
             { ids: ids, isShow: isShow },
             { headers: getHeader() }
           ).then(res => {
-            if (res.data.ok == 1) window.$.alert("Thành công");
+            if (res.data.ok == 1) alertSuccess("Thành công");
             setList([
               ...list.map(e => {
                 if (ids.includes(e._id)) e.isShow = isShow;
@@ -97,18 +96,15 @@ const Payment = () => {
     });
   };
   const getList = () => {
-    let url =
-      process.config.apiUrl + `/admin/payment/list/${list.length}-${page}`;
-    Axios.get(url, {
-      headers: getHeader()
-    }).then(result => {
-      result.data.map(e => {
+    let url = config.apiUrl + "/admin/payment/list";
+    http.get(url).then(res => {
+      let data = res.data;
+      data = data.map(e => {
         e.check = false;
         return e;
       });
-      console.log(result.data);
-      setList([...list, ...result.data]);
-      if (result.data == 0) window.window.$.alert("Đã load hết dữ liệu");
+      console.log(data);
+      setList(data);
     });
   };
   const onCheckAllChange = e => {
@@ -148,19 +144,13 @@ const Payment = () => {
 
   const columns = [
     {
-      Header: (
-        <input type="checkbox" checked={checkall} onChange={onCheckAllChange} />
-      ),
+      Header: <input type="checkbox" checked={checkall} onChange={onCheckAllChange} />,
       Cell: v => {
         let row = v.row._original;
         return (
           <div style={{ textAlign: "center" }}>
             {" "}
-            <input
-              type="checkbox"
-              checked={row.check}
-              onChange={() => onCheckBoxChange(row._id)}
-            />
+            <input type="checkbox" checked={row.check} onChange={() => onCheckBoxChange(row._id)} />
           </div>
         );
       },
@@ -224,19 +214,11 @@ const Payment = () => {
                 <h3 className="box-title">Danh sách phương thức thanh toán</h3>
                 <div className="row">
                   <div className="col-md-6 pull-right padding">
-                    <button
-                      type="button"
-                      className="btn btn-success pull-right"
-                      onClick={() => getList()}
-                    >
+                    <button type="button" className="btn btn-success pull-right" onClick={() => getList()}>
                       <i className="fa fa-refresh" /> Load more
                     </button>
 
-                    <Link
-                      style={{ marginRight: "2px" }}
-                      to="/admin/payment/add"
-                      className="btn btn-success pull-right"
-                    >
+                    <Link style={{ marginRight: "2px" }} to="/admin/payment/add" className="btn btn-success pull-right">
                       <i className="fa fa-plus" /> Add
                     </Link>
 

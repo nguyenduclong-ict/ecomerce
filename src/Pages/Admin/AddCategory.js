@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { getHeader } from "../../helpers/Auth";
+import { alertError, alertSuccess, alertWarning, showAlert } from "../../helpers/Alert";
 
 const AddCategory = () => {
   const [name, setName] = useState();
@@ -20,7 +21,7 @@ const AddCategory = () => {
   const getList = () => {
     let url = process.config.apiUrl + "/admin/category/list";
     axios.get(url, { headers: getHeader() }).then(res => {
-        console.log(res.data);
+      console.log(res.data);
       setList([{ _id: -1, name: "None" }, ...res.data]);
     });
   };
@@ -46,20 +47,9 @@ const AddCategory = () => {
     console.log({ name, parentId });
     axios.post(url, { name, parentId }, { headers: getHeader() }).then(res => {
       console.log(res);
-      if (res.data.ok === 1)
-        window.$.alert({
-          title: "Thành công",
-          content: res.data.message || "Thêm thành công",
-          type: "green",
-          animationSpeed: 100
-        });
+      if (res.data.ok === 1) alertSuccess(res.data.message || "Thêm thành công");
       else {
-        window.$.alert({
-          title: "Thất bại",
-          content: res.data.message || "Có lỗi xảy ra, vui lòng thử lại sau!",
-          type: "red",
-          animationSpeed: 100
-        });
+        alertError(res.data.message || "Có lỗi xảy ra, vui lòng thử lại sau!");
       }
     });
   };

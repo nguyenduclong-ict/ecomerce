@@ -4,6 +4,8 @@ import "react-table/react-table.css";
 import Axios from "axios";
 import { getHeader } from "../../helpers/Auth";
 import { Link } from "react-router-dom";
+import { showAlert } from "../../helpers/Alert";
+import { alertSuccess, alertError } from "../../helpers/Alert";
 
 const Product = () => {
   // URL
@@ -47,12 +49,7 @@ const Product = () => {
               });
               console.log(list);
               setList([...list]);
-              window.$.alert({
-                title: "Thành công",
-                content: (isShow ? "unblock" : "block") + " thành công!",
-                type: "green",
-                animationSpeed: 100
-              });
+              alertSuccess((isShow ? "unblock" : "block") + " thành công!");
             }
           });
         },
@@ -78,14 +75,14 @@ const Product = () => {
           Axios.post(URL_BLOCK, { ids: ids, isShow: isShow }, { headers: getHeader()}).then(res => {
             console.log(res.data);
             if (res.data.ok == 1) {
-              window.$.alertSuccess("Thành công");
+              alertSuccess("Thành công");
               setList([
                 ...list.map(e => {
                   if (ids.includes(e._id)) e.isShow = isShow;
                   return e;
                 })
               ]);
-            } else window.$.alertError("Thất bại");
+            } else alertError("Thất bại");
           });
         },
         cancel: () => {
@@ -105,7 +102,7 @@ const Product = () => {
       });
       console.log(result.data);
       setList([...list, ...result.data]);
-      if (result.data == 0) window.$.alert("Đã load hết dữ liệu");
+      if (result.data == 0) showAlert("Đã load hết dữ liệu");
     });
   };
   const onCheckAllChange = e => {

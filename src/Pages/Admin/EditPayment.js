@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { getHeader } from "../../helpers/Auth";
+import { alertError, alertSuccess, alertWarning, showAlert } from "../../helpers/Alert";
 
 const EditPayment = props => {
   const [name, setName] = useState();
@@ -45,20 +46,9 @@ const EditPayment = props => {
       .then(res => {
         console.log(res);
         if (res.data.ok === 1)
-          window.$.alert({
-            title: "Thành công",
-            content:
-              res.data.message || "Thêm phương thức thanh toán thành công",
-            type: "green",
-            animationSpeed: 100
-          });
+          alertSuccess(res.data.message || "Thêm phương thức thanh toán thành công");
         else {
-          window.$.alert({
-            title: "Thất bại",
-            content: res.data.message || "Có lỗi xảy ra, vui lòng thử lại sau!",
-            type: "red",
-            animationSpeed: 100
-          });
+          alertError(res.data.message || "Có lỗi xảy ra, vui lòng thử lại sau!");
         }
       });
   };

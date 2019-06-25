@@ -7,6 +7,7 @@ import axios from "axios";
 import { getHeader } from "../../helpers/Auth";
 import { resolve } from "url";
 import { Promise, reject } from "q";
+import { alertError, alertSuccess, alertWarning, showAlert } from "../../helpers/Alert";
 
 const EditDiscount = ({query}) => {
   const [value, setValue] = useState(0);
@@ -24,11 +25,11 @@ const EditDiscount = ({query}) => {
       .post(url, body, { headers: getHeader() })
       .then(res => {
         console.log(res.data);
-        if (res.data.ok === 1) window.$.alertSuccess("Chỉnh sửa giảm giá thành công!");
+        if (res.data.ok === 1) alertSuccess("Chỉnh sửa giảm giá thành công!");
         else throw new Error();
       })
       .catch(err => {
-        window.$.alertError("Có lỗi xảy ra, sửa thông tin thất bại!");
+        alertError("Có lỗi xảy ra, sửa thông tin thất bại!");
       });
   };
 

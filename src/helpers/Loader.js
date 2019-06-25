@@ -1,23 +1,21 @@
 class Loader {
-    static loadCSS = (hrefs, id = "load-top", onload) => {
+    static loadCSS = (hrefs, id = "load-top") => {
         hrefs.forEach(href => {
             let tag = document.createElement('link');
             tag.rel = "stylesheet";
+            tag.async = false;
             tag.href = href;
-            document.getElementById(id).appendChild(tag);
+            window.document.getElementById(id).appendChild(tag);
         });
-        window.addEventListener('load', onload);
     }
 
-    static loadScript = (srcs, id = "load-bottom", onload) => {
+    static loadScript = (srcs, id = "load-bottom") => {
         srcs.forEach(src => {
             let tag = document.createElement('script');
-            tag.async = false; // quan trong
             tag.src = src;
-            document.getElementById(id).appendChild(tag);
+            tag.async = false; // quan trong
+            window.document.getElementById(id).appendChild(tag);
         });
-
-        window.addEventListener('load', onload);
     }
 
     /**
@@ -29,6 +27,7 @@ class Loader {
        this.loadCSS(hrefs);
        this.loadScript(srcs);
        window.addEventListener('load', onload);
+    //    window.onload = onload;
     };  
 
     static clearCSS() {

@@ -85,7 +85,6 @@ const router = {
   ],
   getRoute: function (url) {
     let router = this.routers.find(e => url === e.url);
-    console.log(router);
     return (router ? router : {component : Error, header : "404", code : 404});
   }
 };

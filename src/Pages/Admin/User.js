@@ -3,6 +3,7 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import Axios from "axios";
 import { getHeader } from "../../helpers/Auth";
+import { alertSuccess, showAlert } from "../../helpers/Alert";
 
 const User = props => {
   const [list, setList] = useState([]);
@@ -45,12 +46,7 @@ const User = props => {
                 return e;
               });
               setList([...list]);
-              window.$.alert({
-                title: "Thanh cong",
-                content: (isBlock ? "block" : "unblock") + " thành công!",
-                type: "green",
-                animationSpeed: 100
-              });
+              alertSuccess((isBlock ? "block" : "unblock") + " thành công!");
             }
           });
         },
@@ -78,7 +74,7 @@ const User = props => {
             { ids: ids, isBlock: isBlock },
             { headers: getHeader() }
           ).then(res => {
-            if (res.data.ok == 1) window.$.alert("Thành công");
+            if (res.data.ok == 1) alertSuccess("Thành công");
             setList([
               ...list.map(e => {
                 if (ids.includes(e._id)) e.isBlock = isBlock;
@@ -105,7 +101,7 @@ const User = props => {
       });
       console.log(result.data);
       setList([...list, ...result.data]);
-      if (result.data == 0) window.$.alert("Đã load hết dữ liệu");
+      if (result.data == 0) showAlert("Đã load hết dữ liệu");
     });
   };
   const onCheckAllChange = e => {

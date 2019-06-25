@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { getHeader } from "../../helpers/Auth";
+import { alertError, alertSuccess, alertWarning, showAlert } from "../../helpers/Alert";
 
-const EditCategory = ({query}) => {
+const EditCategory = ({ query }) => {
   const [name, setName] = useState();
   const [parentId, setParentId] = useState();
   const [list, setList] = useState([{ _id: -1, name: "None" }]);
@@ -17,15 +18,14 @@ const EditCategory = ({query}) => {
     }
   };
 
-
   // Lấy thông tin của category hiện tại
-  const getDetail = () =>{
+  const getDetail = () => {
     let url = process.config.apiUrl + "/admin/category/detail/" + query.id;
     axios.get(url, { headers: getHeader() }).then(res => {
       console.log(res.data);
       setName(res.data.name);
     });
-  }
+  };
   // Lấy danh sách category de chọn là parent Category
   const getList = () => {
     let url = process.config.apiUrl + "/admin/category/list?parentId=null";
@@ -58,20 +58,9 @@ const EditCategory = ({query}) => {
     console.log({ name, parentId });
     axios.post(url, { name, parentId }, { headers: getHeader() }).then(res => {
       console.log(res);
-      if (res.data.ok === 1)
-        window.$.alert({
-          title: "Thành công",
-          content: res.data.message || "Cập nhật thành công",
-          type: "green",
-          animationSpeed: 100
-        });
+      if (res.data.ok === 1) alertSuccess(res.data.message || "Cập nhật thành công");
       else {
-        window.$.alert({
-          title: "Thất bại",
-          content: res.data.message || "Có lỗi xảy ra, vui lòng thử lại sau!",
-          type: "red",
-          animationSpeed: 100
-        });
+        alertError(res.data.message || "Có lỗi xảy ra, vui lòng thử lại sau!");
       }
     });
   };
@@ -96,12 +85,7 @@ const EditCategory = ({query}) => {
             </div>
             <div className="form-group">
               <label for="inputName">Danh mục cha</label>
-              <select
-                name="parentId"
-                value={parentId}
-                onChange={handleInputChange}
-                class="form-control"
-              >
+              <select name="parentId" value={parentId} onChange={handleInputChange} class="form-control">
                 {renderOptions()}
               </select>
             </div>

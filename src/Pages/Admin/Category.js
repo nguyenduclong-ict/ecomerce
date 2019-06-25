@@ -4,6 +4,9 @@ import "react-table/react-table.css";
 import Axios from "axios";
 import { getHeader } from "../../helpers/Auth";
 import { Link } from "react-router-dom";
+import { alertError, alertSuccess, alertWarning, showAlert } from "../../helpers/Alert";
+import config from "../../helpers/config";
+import http from "../../helpers/http";
 
 const Category = () => {
   const [list, setList] = useState([]);
@@ -25,9 +28,6 @@ const Category = () => {
   };
 
   const onChangeStatus = (id, isShow) => {
-
-
-    console.log(isShow);
     window.$.confirm({
       title: "Chú ý",
       content: (isShow ? "block" : "unBlock") + " danh mục này?",
@@ -36,11 +36,7 @@ const Category = () => {
       buttons: {
         ok: () => {
           let url = process.config.apiUrl + "/admin/category/set-show";
-          Axios.post(
-            url,
-            { ids: [id], isShow: isShow },
-            { headers: getHeader() }
-          ).then(res => {
+          Axios.post(url, { ids: [id], isShow: isShow }, { headers: getHeader() }).then(res => {
             console.log(res);
             if (res.data.ok === 1) {
               list.map(e => {
@@ -49,7 +45,7 @@ const Category = () => {
               });
               console.log(list);
               setList([...list]);
-              window.$.alert({
+              alert({
                 title: "Thanh cong",
                 content: (isShow ? "block" : "unblock") + " thành công!",
                 type: "green",
@@ -78,11 +74,11 @@ const Category = () => {
       buttons: {
         ok: () => {
           Axios.post(
-            process.config.apiUrl + "/admin/user/change-block",
+            process.config.apiUrl + "/admin/category/set-show",
             { ids: ids, isShow: isShow },
             { headers: getHeader() }
           ).then(res => {
-            if (res.data.ok == 1) window.$.alert("Thành công");
+            if (res.data.ok == 1) alert("Thành công");
             setList([
               ...list.map(e => {
                 if (ids.includes(e._id)) e.isShow = isShow;
@@ -98,18 +94,15 @@ const Category = () => {
     });
   };
   const getList = () => {
-    let url =
-      process.config.apiUrl + `/admin/category/list/all-${list.length}-${page}`;
-    Axios.get(url, {
-      headers: getHeader()
-    }).then(result => {
-      result.data.map(e => {
+    let url = config.apiUrl + "/admin/category/list";
+    http.get(url).then(res => {
+      let data = res.data;
+      data = data.map(e => {
         e.check = false;
         return e;
       });
-      console.log(result.data);
-      setList([...list, ...result.data]);
-      if (result.data == 0) window.window.$.alert("Đã load hết dữ liệu");
+      console.log(data);
+      setList(data);
     });
   };
   const onCheckAllChange = e => {
@@ -149,19 +142,13 @@ const Category = () => {
 
   const columns = [
     {
-      Header: (
-        <input type="checkbox" checked={checkall} onChange={onCheckAllChange} />
-      ),
+      Header: <input type="checkbox" checked={checkall} onChange={onCheckAllChange} />,
       Cell: v => {
         let row = v.row._original;
         return (
           <div style={{ textAlign: "center" }}>
             {" "}
-            <input
-              type="checkbox"
-              checked={row.check}
-              onChange={() => onCheckBoxChange(row._id)}
-            />
+            <input type="checkbox" checked={row.check} onChange={() => onCheckBoxChange(row._id)} />
           </div>
         );
       },
@@ -196,7 +183,7 @@ const Category = () => {
               style={{ color: !row.isShow ? "red" : "green" }}
               onClick={() => onChangeStatus(row._id, !row.isShow)}
             />
-            <Link to={"/admin/category/edit?id=" + row._id} className="btn fa fa-edit"/>
+            <Link to={"/admin/category/edit?id=" + row._id} className="btn fa fa-edit" />
           </div>
         );
       }
@@ -211,14 +198,6 @@ const Category = () => {
               <div className="box-header with-border">
                 <div className="row">
                   <div className="col-md-6 col-6 pull-right padding">
-                    <button
-                      type="button"
-                      className="btn btn-success pull-right"
-                      onClick={() => getList()}
-                    >
-                      <i className="fa fa-refresh" /> Load more
-                    </button>
-
                     <Link
                       style={{ marginRight: "2px" }}
                       to="/admin/category/add"

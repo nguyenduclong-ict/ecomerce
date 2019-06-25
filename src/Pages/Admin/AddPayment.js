@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { getHeader } from "../../helpers/Auth";
+import { alertError, alertSuccess, alertWarning, showAlert } from "../../helpers/Alert";
 
 const AddPayment = () => {
-  const $ = window.$;
   const [name, setName] = useState();
   const [description, setDescription] = useState();
   const [code, setCode] = useState();
@@ -22,30 +22,16 @@ const AddPayment = () => {
   };
 
   const postAdd = e => {
-    if(name && code ) e.preventDefault();
+    if (name && code) e.preventDefault();
     let url = process.config.apiUrl + "/admin/payment/add";
     console.log({ name, description, code });
-    axios
-      .post(url, { name, description, code }, { headers: getHeader() })
-      .then(res => {
-        console.log(res);
-        if (res.data.ok === 1)
-          window.$.alert({
-            title: "Thành công",
-            content:
-              res.data.message || "Thêm phương thức thanh toán thành công",
-            type: "green",
-            animationSpeed: 100
-          });
-        else {
-          window.$.alert({
-            title: "Thất bại",
-            content: res.data.message || "Có lỗi xảy ra, vui lòng thử lại sau!",
-            type: "red",
-            animationSpeed: 100
-          });
-        }
-      });
+    axios.post(url, { name, description, code }, { headers: getHeader() }).then(res => {
+      console.log(res);
+      if (res.data.ok === 1) alertSuccess(res.data.message || "Thêm phương thức thanh toán thành công");
+      else {
+        alertError(res.data.message || "Có lỗi xảy ra, vui lòng thử lại sau!");
+      }
+    });
   };
 
   return (

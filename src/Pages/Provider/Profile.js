@@ -51,7 +51,7 @@ const Profile = (props) => {
     <section className="content">
       <div className="box box-primary">
         <div className="box-header with-border">
-          <h3 className="box-title">Thêm danh mục</h3>
+          <h3 className="box-title">Thông tin tài khoản</h3>
         </div>
         {/* <!-- /.box-header --> */}
         {/* <!-- form start --> */}

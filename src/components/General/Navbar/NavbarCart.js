@@ -5,7 +5,7 @@ import { getHeader, getAuthInfo } from "../../../helpers/Auth";
 import {Link} from 'react-router-dom'
 import axios from "axios";
 import "./NavbarCart.css";
-
+import {alertError,alertSuccess,alertWarning, showAlert} from '../../../helpers/Alert'
 const NavbarCart = () => {
   const [cart, setCart] = useState({ userId: null, products: [] });
   useEffect(() => {
@@ -62,7 +62,7 @@ const NavbarCart = () => {
       console.log(c);
       c.products = [...new Set(c.products)];
       localStorage.setItem("cart", JSON.stringify(c));
-      window.$.alertSuccess("Thêm vào giỏ hàng thành công");
+      alertSuccess("Thêm vào giỏ hàng thành công");
       getCartInfo();
     } else {
       // Da dang nhap
@@ -72,11 +72,11 @@ const NavbarCart = () => {
       axios
         .post(url, { products: products }, { headers: headers })
         .then(res => {
-          window.$.alertSuccess("Thêm vào giỏ hàng thành công");
+          alertSuccess("Thêm vào giỏ hàng thành công");
           getCartInfo();
         })
         .catch(err => {
-          window.$.alertError("Lỗi");
+          alertError("Lỗi");
         });
     }
   };
@@ -89,11 +89,11 @@ const NavbarCart = () => {
     axios
       .post(url, { products }, { headers })
       .then(res => {
-        window.$.alertSuccess("Đã xóa khỏi giỏ hàng");
+        alertSuccess("Đã xóa khỏi giỏ hàng");
         getCartInfo();
       })
       .catch(err => {
-        window.$.alertError("Có lỗi xảy ra");
+        alertError("Có lỗi xảy ra");
       });
   };
 
